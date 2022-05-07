@@ -1,5 +1,6 @@
 import { keccak256 } from '@ethersproject/keccak256';
 import { Provider } from '@ethersproject/abstract-provider';
+import { OracleHashes } from '../../types';
 
 /**
  * @param oracleAddress - Oracle address to use.
@@ -8,7 +9,7 @@ import { Provider } from '@ethersproject/abstract-provider';
 export const identifyPriceOracle = async function (
     oracleAddress: string,
     provider: Provider,
-    oracleHashes: string[],
+    oracleHashes: OracleHashes,
   ): Promise<string | null> {
     // Get price oracle contract name from runtime bytecode hash
     const runtimeBytecodeHash = keccak256(

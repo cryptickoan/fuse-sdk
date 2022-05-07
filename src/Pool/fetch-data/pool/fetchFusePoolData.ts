@@ -3,7 +3,7 @@ import { Contract } from "@ethersproject/contracts";
 
 // Internal 
     // Types
-import { FusePoolData } from "../../types";
+import { FusePoolData, OracleHashes } from "../../types";
     // Functions
 import { filterPoolName } from "../utils/filterPoolName";
     // Interfaces
@@ -24,7 +24,7 @@ export async function fetchFusePoolData (
     fuseDirectoryAddress: string,
     provider: Provider, 
     poolId: number,
-    oracleHashes: string[]
+    oracleHashes: OracleHashes
 ): Promise<FusePoolData | undefined> {
     // 1. Get Pool info from lens.
     const {
