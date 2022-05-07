@@ -7,7 +7,7 @@ import { Contract } from "@ethersproject/contracts";
 import { getAddresses } from "./utils/getAddresses";
 import { getOracleHashes } from "./utils/getOracleHashes";
     // Types
-import { PoolInstance } from "./types";
+import { FusePoolData, PoolInstance } from "./types";
 import { fetchAvailableRdsWithContext, fetchTokenBalance, getDecimals, getEthUsdPriceBN, getMarketsWithData, getPool, getUnderlyingBalancesForPool } from "./fetch-data";
 import { identifyPriceOracle } from "./fetch-data";
 
@@ -37,31 +37,33 @@ export const Pool = async function(
 
     const addresses = getAddresses(chainId)
     const oracleHashes = getOracleHashes(chainId)
-
-    const fuseLensInterface = iFuseLens
-
     const fuseLensContract = new Contract(
         addresses.FUSE_POOL_LENS_CONTRACT_ADDRESS,
-        fuseLensInterface,
+        iFuseLens,
         provider
     )
 
     const secondaryFuseLensContract = new Contract(
         addresses.FUSE_POOL_LENS_SECONDARY_CONTRACT_ADDRESS,
-        fuseLensInterface,
+        iFuseLens,
         provider
     )
 
-    const data = await fetchFusePoolData(addresses.FUSE_POOL_DIRECTORY_CONTRACT_ADDRESS, provider, poolId, oracleHashes)
+
+    let data: FusePoolData
+    try {
+        data = await fetchFusePoolData(addresses.FUSE_POOL_DIRECTORY_CONTRACT_ADDRESS, provider, poolId, oracleHashes)
+    } catch (e) {
+        throw e
+    }
     
     const instance: any = {
         poolId,
+        poolData: data,
         contracts: {
             fuseLens: fuseLensContract,
             secondaryFuseLens: secondaryFuseLensContract
         },
-        _provider: provider,
-        poolData: data,
         fetch: {
             getMarketsWithData: getMarketsWithData.bind({contracts: {fuseLensContract}}, data.comptroller),
             fetchAvailableRdsWithContext: fetchAvailableRdsWithContext.bind(null, data.comptroller, provider)
