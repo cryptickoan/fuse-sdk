@@ -20,9 +20,6 @@ export async function getMarketsWithData(
     comptrollerAddress: string,
     options?: Options
 ): Promise<MarketsWithData> {
-
-    console.log(this)
-
     let assets: USDPricedFuseAsset[] = (
         await this.contracts.fuseLensContract.callStatic.getPoolAssetsWithData(
             comptrollerAddress,  options ?? {})
