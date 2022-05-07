@@ -9,6 +9,7 @@ import { Options } from '../../types';
 import { MarketsWithData } from '../../types';
     // Utils
 import { filterOnlyObjectProperties } from "../utils/filterOnlyObjectProperties";
+import { getEthUsdPriceBN } from '../misc';
 
 /**
  * @param comptrollerAddress - Comptroller to look for.
@@ -25,7 +26,7 @@ export async function getMarketsWithData(
             comptrollerAddress,  options ?? {})
     ).map(filterOnlyObjectProperties)
 
-    const ethPrice: BigNumber = await this.getEthUsdPriceBN();
+    const ethPrice: BigNumber = await getEthUsdPriceBN();
 
     let totalLiquidityUSD = Zero;
     

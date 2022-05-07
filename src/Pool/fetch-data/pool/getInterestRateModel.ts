@@ -1,6 +1,7 @@
 import { Interface } from "@ethersproject/abi";
 import { Contract } from "@ethersproject/contracts";
 import { keccak256 } from "@ethersproject/keccak256";
+import { Provider } from '@ethersproject/abstract-provider';
 
 // IRMS
 import DAIInterestRateModelV2 from '../../irm/DAIInterestRateModelV2';
@@ -13,7 +14,8 @@ import WhitePaperInterestRateModel from "../../irm/WhitePaperInterestRateModel";
  * @returns - An initiated IRM class, used to simulate future supply/borrow rates.
  */
 export const getInterestRateModel = async function (
-    marketAddress: string
+    marketAddress: string,
+    provider: Provider
   ): Promise<any | undefined> {
 
     const cTokenInterface = new Interface([
@@ -23,7 +25,7 @@ export const getInterestRateModel = async function (
     const assetContract = new Contract(
       marketAddress,
       cTokenInterface,
-      this._provider
+      provider
     );
 
     // Get IRM address
@@ -38,7 +40,7 @@ export const getInterestRateModel = async function (
       WhitePaperInterestRateModel: WhitePaperInterestRateModel,
     };
 
-    const runtimeBytecodeHash = keccak256( await this._provider.getCode(interestRateModelAddress))
+    const runtimeBytecodeHash = keccak256( await provider.getCode(interestRateModelAddress))
 
     let irm;
     outerLoop: for (const model of Object.keys(interestRateModels)) {
@@ -62,7 +64,7 @@ export const getInterestRateModel = async function (
     await irm.init(
       interestRateModelAddress,
       marketAddress,
-      this._provider
+      provider
     );
 
     return irm;

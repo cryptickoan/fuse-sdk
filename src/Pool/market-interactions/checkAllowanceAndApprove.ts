@@ -4,6 +4,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
 import { parseEther, parseUnits } from '@ethersproject/units';
 import { Interface } from '@ethersproject/abi';
+import { Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
 
 /**
  * This function will check current allowance of the market address. If allowance is not enough it'll increase given allowance. 
@@ -19,7 +20,8 @@ export async function checkAllowanceAndApprove(
     marketAddress: string,
     underlyingAddress: string,
     amount: string,
-    decimals: BigNumber
+    decimals: BigNumber,
+    provider: Web3Provider | JsonRpcProvider
 ) {
     const isEth = underlyingAddress === "0x0000000000000000000000000000000000000000"
     if (isEth) return
@@ -32,7 +34,7 @@ export async function checkAllowanceAndApprove(
     const erc20Contract = new Contract(
         underlyingAddress,
         erc20Interface,
-        this._provider.getSigner(userAddress)
+        provider.getSigner(userAddress)
     )
 
     

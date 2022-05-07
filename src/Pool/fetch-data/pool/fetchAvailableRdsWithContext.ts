@@ -1,5 +1,6 @@
 // Ethers
 import { Contract } from "@ethersproject/contracts"
+import { Provider } from '@ethersproject/abstract-provider'
 import iComptroller from "../../../Interfaces/iComptroller"
 
 // Interface
@@ -14,11 +15,12 @@ import { RewardsDistributorData } from "../../types"
  */
 export async function fetchAvailableRdsWithContext(
     comptrollerAddress: string,
+    provider: Provider
   ): Promise<RewardsDistributorData[]> {
     const comptrollerContract = new Contract(
       comptrollerAddress,
       iComptroller,
-      this._provider
+      provider
     )
 
     const availableRds = await comptrollerContract.callStatic.getRewardsDistributors()
@@ -28,7 +30,7 @@ export async function fetchAvailableRdsWithContext(
       const rdContract = new Contract(
         rdAddress,
         iFlywheel,
-        this._provider
+        provider
       )
 
       let isFlywheel = false;

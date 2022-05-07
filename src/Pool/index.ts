@@ -8,12 +8,16 @@ import { getAddresses } from "./utils/getAddresses";
 import { getOracleHashes } from "./utils/getOracleHashes";
     // Types
 import { PoolInstance } from "./types";
+import { getPool } from "./fetch-data";
+import { identifyPriceOracle } from "./fetch-data";
+
     // Fetching Data Functions
 import * as fetching from "./fetch-data";
     // Market Interactions
 import * as market from './market-interactions';
 
 import iFuseLens from "../Interfaces/iFuseLens";
+import { fetchFusePoolData } from "./fetch-data";
 
 
 /**
@@ -26,7 +30,7 @@ export const Pool = function(
     provider: Web3Provider | JsonRpcProvider,
     chainId: number,
     poolId: number
-): PoolInstance | undefined {
+): Promise<PoolInstance | undefined> {
     if(!provider  || !chainId || !poolId) {
         return undefined
     }
@@ -48,7 +52,7 @@ export const Pool = function(
         provider
     )
     
-    const instance: PoolInstance = {
+    const instance: any = {
         poolId,
         contracts: {
             fuseLens: fuseLensContract,
@@ -57,9 +61,9 @@ export const Pool = function(
         _provider: provider,
         addresses,
         oracleHashes,
-        ...fetching,
-        ...market,
+        fetchFusePoolData: fetchFusePoolData.bind({provider, poolId, addresses, getPool, identifyPriceOracle})
     };
+
 
     return instance
 }

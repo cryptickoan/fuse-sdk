@@ -1,6 +1,7 @@
 // Ethers
 import { Interface } from "@ethersproject/abi";
 import { Contract } from "@ethersproject/contracts";
+import { Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
 
 // SDK
 import { actionType } from "../types";
@@ -14,6 +15,7 @@ export async function collateral(
     comptrollerAddress: string,
     marketAddress: string[],
     action: actionType,
+    provider: Web3Provider | JsonRpcProvider
 ) {
     const comptrollerInterface = new Interface([
         'function enterMarkets(address[] calldata cTokens) external returns (uint[] memory)',
@@ -23,7 +25,7 @@ export async function collateral(
     const comptrollerContract = new Contract(
         comptrollerAddress,
         comptrollerInterface,
-        this._provider.getSigner()
+        provider.getSigner()
     )
 
     // Don't await this, we don't care if it gets executed first!

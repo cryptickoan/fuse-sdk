@@ -1,7 +1,7 @@
 // Ethers
-import { Interface } from "@ethersproject/abi"
 import { BigNumber } from "@ethersproject/bignumber"
 import { Contract } from "@ethersproject/contracts"
+import { Provider } from '@ethersproject/abstract-provider'
 import iRewardsDistributor from "../../../Interfaces/iRewardsDistributor"
 
 /**
@@ -14,12 +14,13 @@ import iRewardsDistributor from "../../../Interfaces/iRewardsDistributor"
 export async function fetchRewardSpeedInMarket(
     rdAddress: string,
     marketAddress: string,
-    type: 'supply' | 'borrow'
+    type: 'supply' | 'borrow',
+    provider: Provider
 ): Promise<BigNumber> {
     const rdContract = new Contract(
             rdAddress,
             iRewardsDistributor,
-            this._provider
+            provider
     )
 
     return type === 'supply' 

@@ -2,6 +2,7 @@
 import { BigNumber } from "@ethersproject/bignumber"
 import { Contract } from "@ethersproject/contracts"
 import iMPO from "../../../Interfaces/iMPO"
+import { Provider } from '@ethersproject/abstract-provider'
 
 /**
  * @param tokenAddress - Token address (ERC20) to look for.
@@ -11,12 +12,13 @@ import iMPO from "../../../Interfaces/iMPO"
 export function getPriceFromOracle(
     tokenAddress: string,
     oracleAddress: string,
+    provider: Provider
 ): Promise<BigNumber> {
     // We need to call the MPO to get price of the given asset.
     const oracleContract = new Contract(
             oracleAddress,
             iMPO,
-            this._provider
+            provider
     )
 
     return oracleContract.callStatic.price(tokenAddress)      

@@ -2,7 +2,7 @@
 import { Interface } from "@ethersproject/abi"
 import { BigNumber } from "@ethersproject/bignumber"
 import { Contract } from "@ethersproject/contracts"
-import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers"
+import { Provider } from '@ethersproject/abstract-provider'
 import iERC20 from "../../../Interfaces/iERC20"
 
 /**
@@ -12,7 +12,7 @@ import iERC20 from "../../../Interfaces/iERC20"
  */
 export async function getDecimals(
     tokenAddress: string,
-    provider: Web3Provider | JsonRpcProvider
+    provider: Provider
 ): Promise<BigNumber> {
     const erc20Contract = new Contract(
         tokenAddress,
