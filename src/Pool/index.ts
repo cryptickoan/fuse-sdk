@@ -8,7 +8,7 @@ import { getAddresses } from "./utils/getAddresses";
 import { getOracleHashes } from "./utils/getOracleHashes";
     // Types
 import { PoolInstance } from "./types";
-import { getPool } from "./fetch-data";
+import { getMarketsWithData, getPool } from "./fetch-data";
 import { identifyPriceOracle } from "./fetch-data";
 
     // Fetching Data Functions
@@ -26,7 +26,7 @@ import { fetchFusePoolData } from "./fetch-data";
  * @param poolId - The pool's id.
  * @returns An interface that'll let apps interact with the given fuse pool. (read/write functions).
  */
-export const Pool = function(
+export const Pool = async function(
     provider: Web3Provider | JsonRpcProvider,
     chainId: number,
     poolId: number
@@ -51,6 +51,8 @@ export const Pool = function(
         fuseLensInterface,
         provider
     )
+
+    const data = await fetchFusePoolData(addresses.FUSE_POOL_DIRECTORY_CONTRACT_ADDRESS, provider, poolId, oracleHashes)
     
     const instance: any = {
         poolId,
@@ -59,7 +61,8 @@ export const Pool = function(
             secondaryFuseLens: secondaryFuseLensContract
         },
         _provider: provider,
-        fetchFusePoolData: fetchFusePoolData.bind(null, addresses.FUSE_POOL_DIRECTORY_CONTRACT_ADDRESS, provider, poolId, oracleHashes)
+        poolData: data,
+        getMarketsWithData: getMarketsWithData.bind({contracts: {fuseLensContract}}, data.comptroller)
     };
 
 
