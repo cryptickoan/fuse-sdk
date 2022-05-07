@@ -1,39 +1,51 @@
-import { spawn } from 'child_process'
+import 'dotenv/config'
 
-let process
+// Ethers
+import { JsonRpcProvider } from '@ethersproject/providers'
 
-const initiateNode = async () => {
-    try {
-        process = spawn("anvil", {shell: true})
+// Types
+import { ChildProcessWithoutNullStreams } from 'child_process'
+
+// Utils
+import { execWaitForOutput } from './utils'
+import testSuite from './utils/constants'
+
+// SDK
+import { Pool } from '../src'
+import { PoolInstance } from '../src/Pool/types'
+
+describe('Fuse', () => {
+    let anvilNodeProcess: ChildProcessWithoutNullStreams
+    let fuse: PoolInstance
+
+    beforeAll(async () => {
+        try {
+            anvilNodeProcess = await execWaitForOutput(
+                "anvil", 
+                [`--fork-url ${process.env.RPC_URL} --fork-block-number ${process.env.BLOCK_NUM}`]
+            )
+
+        } catch(e) {
+            console.log(e)
+        }
+
+        const provider = new JsonRpcProvider("http://127.0.0.1:8545")
+        fuse = Pool(provider, 1, 1)
+    })
+
+    it("Should return the correct data for given Fuse pool", async () => {
+        const data = await fuse.fetchFusePoolData()
+
+        expect(Object.keys(data).length).toBe(5)
+        expect(data.comptroller).toBe(testSuite.fetchFusePoolData.comptroller)
+    })
     
-        process.stdout.on( 'data', ( data ) => {
-            console.log( `stdout: ${ data }` );
-        } );
-        
-        process.stderr.on( 'data', ( data ) => {
-            console.log( `stderr: ${ data }` );
-        } );
-        return true
-    } catch (e) {
-        throw e
-    }
-}
-
-beforeAll(async () => {
-    try {
-        await initiateNode()
-    } catch(e) {
-        console.log(e)
-    }
+    afterAll(() => {
+        anvilNodeProcess.kill()
+    })
 })
 
-it("Should console log", () => {
-    console.log("hello")
-})
 
-afterAll(() => {
-    console.log('lol')
-    process.kill()
-})
+
 
 
