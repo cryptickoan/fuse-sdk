@@ -6,13 +6,13 @@ import { Provider } from '@ethersproject/abstract-provider'
 import iERC20 from "../../../Interfaces/iERC20"
 
 /**
- * @param tokenAddress - Address of the token to get decimals for.
  * @param provider - An initiated ethers provider.
+ * @param tokenAddress - Address of the token to get decimals for.
  * @returns - The decimals of given token.
  */
 export async function getDecimals(
-    tokenAddress: string,
-    provider: Provider
+    provider: Provider,
+    tokenAddress: string
 ): Promise<BigNumber> {
     const erc20Contract = new Contract(
         tokenAddress,

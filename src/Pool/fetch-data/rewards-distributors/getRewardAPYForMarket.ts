@@ -44,8 +44,8 @@ export async function getRewardAPYForMarket(
         )
 
     const rdTokenDecimals = await getDecimals(
-            rdToken,
-            provider
+            provider,
+            rdToken
         )
 
     const rewardEthPrice = await getPriceFromOracle(

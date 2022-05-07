@@ -8,7 +8,7 @@ import { getAddresses } from "./utils/getAddresses";
 import { getOracleHashes } from "./utils/getOracleHashes";
     // Types
 import { PoolInstance } from "./types";
-import { fetchAvailableRdsWithContext, getMarketsWithData, getPool } from "./fetch-data";
+import { fetchAvailableRdsWithContext, fetchTokenBalance, getDecimals, getEthUsdPriceBN, getMarketsWithData, getPool, getUnderlyingBalancesForPool } from "./fetch-data";
 import { identifyPriceOracle } from "./fetch-data";
 
     // Fetching Data Functions
@@ -62,8 +62,16 @@ export const Pool = async function(
         },
         _provider: provider,
         poolData: data,
-        getMarketsWithData: getMarketsWithData.bind({contracts: {fuseLensContract}}, data.comptroller),
-        fetchAvailableRdsWithContext: fetchAvailableRdsWithContext.bind(null, data.comptroller, provider),
+        fetch: {
+            getMarketsWithData: getMarketsWithData.bind({contracts: {fuseLensContract}}, data.comptroller),
+            fetchAvailableRdsWithContext: fetchAvailableRdsWithContext.bind(null, data.comptroller, provider)
+        },
+        utils: {
+            fetchTokenBalance: fetchTokenBalance.bind(null, provider),
+            getDecimals: getDecimals.bind(null, provider),
+            getEthUsdPriceBN,
+            getUnderlyingBalancesForPool
+        }
     };
 
 
