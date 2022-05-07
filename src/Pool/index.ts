@@ -8,16 +8,18 @@ import { getAddresses } from "./utils/getAddresses";
 import { getOracleHashes } from "./utils/getOracleHashes";
     // Types
 import { FusePoolData, PoolInstance } from "./types";
-import { fetchAvailableRdsWithContext, fetchTokenBalance, getDecimals, getEthUsdPriceBN, getMarketsWithData, getPool, getUnderlyingBalancesForPool } from "./fetch-data";
-import { identifyPriceOracle } from "./fetch-data";
-
-    // Fetching Data Functions
-import * as fetching from "./fetch-data";
-    // Market Interactions
-import * as market from './market-interactions';
-
+    // Functions
+import { 
+    fetchAvailableRdsWithContext, 
+    fetchTokenBalance, 
+    fetchFusePoolData,
+    getDecimals, 
+    getEthUsdPriceBN, 
+    getMarketsWithData, 
+    getUnderlyingBalancesForPool 
+} from "./fetch-data";
+    // ABIS
 import iFuseLens from "../Interfaces/iFuseLens";
-import { fetchFusePoolData } from "./fetch-data";
 
 
 /**
