@@ -1,5 +1,6 @@
 // Ethers
 import { Contract } from "@ethersproject/contracts"
+import { Provider } from '@ethersproject/abstract-provider'
 
 // Interface
 import iComptroller from "../../../Interfaces/iComptroller"
@@ -10,11 +11,12 @@ import iComptroller from "../../../Interfaces/iComptroller"
  */
 export async function fetchAllMarkets(
     comptrollerAddress: string,
+    provider: Provider
   ): Promise<string[]> {
     const comptrollerContract = new Contract(
       comptrollerAddress,
       iComptroller,
-      this._provider
+      provider
     )
 
     const availableMarkets = await comptrollerContract.callStatic.getAllMarkets()

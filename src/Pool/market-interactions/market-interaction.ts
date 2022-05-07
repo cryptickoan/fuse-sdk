@@ -2,6 +2,7 @@
 import { Contract } from "@ethersproject/contracts";
 import { parseEther, parseUnits } from "@ethersproject/units";
 import { BigNumber } from "@ethersproject/bignumber";
+import { Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
 
 // Internal
     // Utils
@@ -24,6 +25,7 @@ export async function marketInteraction(
     cTokenAddress: string,
     amount: string,
     tokenAddress: string,
+    provider: Web3Provider | JsonRpcProvider,
     decimals?: BigNumber,
 ) {
 
@@ -31,7 +33,7 @@ export async function marketInteraction(
     const cTokenContract = new Contract(
         cTokenAddress,
         iCToken,
-        this._provider.getSigner()
+        provider.getSigner()
     )
 
     const isEth = tokenAddress === "0x0000000000000000000000000000000000000000"
@@ -41,7 +43,7 @@ export async function marketInteraction(
         if(!decimals && !isEth){
             decimals = await getDecimals(
                 tokenAddress,
-                this._provider
+                provider
             )
         }
 

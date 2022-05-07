@@ -1,5 +1,6 @@
 // Ethers
 import { Contract } from "@ethersproject/contracts"
+import { Provider } from '@ethersproject/abstract-provider'
 import iRewardsDistributor from "../../../Interfaces/iRewardsDistributor"
 
 /**
@@ -8,11 +9,12 @@ import iRewardsDistributor from "../../../Interfaces/iRewardsDistributor"
  */
 export async function fetchRewardedMarketsInRd(
     rdAddress : string,
+    provider: Provider
 ): Promise<string[]> {
     const rdContract = new Contract(
       rdAddress,
       iRewardsDistributor,
-      this._provider
+      provider
     )
 
     return await rdContract.callStatic.getAllMarkets()

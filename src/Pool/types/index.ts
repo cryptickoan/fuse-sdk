@@ -1,7 +1,7 @@
 // Ethers
 import { BigNumber } from "@ethersproject/bignumber";
 import { Contract } from "@ethersproject/contracts";
-import { Web3Provider, JsonRpcProvider } from "@ethersproject/providers";
+import { Provider } from '@ethersproject/abstract-provider'
 
 export interface TokenData {
     name: string;
@@ -98,37 +98,24 @@ export interface RewardsDistributorData {
 
 export type PoolInstance = {
     poolId: number
+    poolData: FusePoolData
     contracts: {
         fuseLens: Contract,
         secondaryFuseLens: Contract
-    },
-    _provider: Web3Provider | JsonRpcProvider,
-    addresses: Addresses,
-    oracleHashes: OracleHashes,
-    getPriceFromOracle(tokenAddress: string, oracleAddress: string): Promise<BigNumber>,
-    getMarketsWithData(comptrollerAddress: string, options?: Options | undefined): Promise<MarketsWithData>,
-    getEthUsdPriceBN: () => Promise<BigNumber>,
-    getDecimals(tokenAddress: string, provider: Web3Provider | JsonRpcProvider): Promise<BigNumber>,
-    fetchAvailableRdsWithContext(comptrollerAddress: string): Promise<RewardsDistributorData[]>,
-    fetchFusePoolData(): Promise<FusePoolData | undefined>,
-    getPool(): Promise<PoolInformation>,
-    getPriceFromOracle(tokenAddress: string, oracleAddress: string): Promise<BigNumber>,
-    fetchAllMarkets(comptrollerAddress: string): Promise<string[]>,
-    fetchRewardedMarketsInRd(rdAddress: string): Promise<string[]>
-    fetchRewardSpeedInMarket(rdAddress: string, marketAddress: string, type: 'supply' | 'borrow'): Promise<BigNumber>,
-    fetchRewardTokenInRd(rdAddress: string): Promise<string>,
-    getRewardAPYForMarket(rdAddress: string, marketAddress: string, oracleAddress: string, comptrollerAddress: string, type: 'supply' | 'borrow'): Promise<{
-        supplyAPR: number;
-        supplyAPY: number;
-    }>
-    getInterestRateModel: (assetAddress: string) => Promise<any | undefined>,
-    marketInteraction(action: marketInteractionType, cTokenAddress: string, amount: string, tokenAddress: string, decimals?: BigNumber): Promise<void>,
-    checkAllowanceAndApprove(userAddress: string, marketAddress: string, underlyingAddress: string, amount: string, decimals: BigNumber): Promise<void>,
-    fetchTokenBalance(tokenAddress: string | undefined, address?: string, parse?: boolean): Promise<number | BigNumber>,
-    collateral(comptrollerAddress: string, marketAddress: string[], action: actionType): Promise<void>,
-    getUnderlyingBalancesForPool(markets: USDPricedFuseAsset[]): {
-        [cToken: string]: BigNumber;
-    },
+    }
+    fetch: {
+        getMarketsWithData(comptrollerAddress: string, options?: Options): Promise<MarketsWithData>,
+        fetchAvailableRdsWithContext(comptrollerAddress: string, provider: Provider): Promise<RewardsDistributorData[]>
+    }
+    utils: {
+        fetchTokenBalance(provider: Provider, tokenAddress: string | undefined, address?: string, parse?: boolean): Promise<number | BigNumber>,
+        getDecimals(provider: Provider, tokenAddress: string): Promise<BigNumber>,
+        getEthUsdPriceBN: () => Promise<BigNumber>,
+        getUnderlyingBalancesForPool: (markets: USDPricedFuseAsset[]) => {
+            [cToken: string]: BigNumber;
+        }
+    }
+
 }
 
 export type marketInteractionType = "withdraw" | "borrow" | "repay" | "supply"

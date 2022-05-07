@@ -7,12 +7,18 @@ import { Contract } from "@ethersproject/contracts";
 import { getAddresses } from "./utils/getAddresses";
 import { getOracleHashes } from "./utils/getOracleHashes";
     // Types
-import { PoolInstance } from "./types";
-    // Fetching Data Functions
-import * as fetching from "./fetch-data";
-    // Market Interactions
-import * as market from './market-interactions';
-
+import { FusePoolData, PoolInstance } from "./types";
+    // Functions
+import { 
+    fetchAvailableRdsWithContext, 
+    fetchTokenBalance, 
+    fetchFusePoolData,
+    getDecimals, 
+    getEthUsdPriceBN, 
+    getMarketsWithData, 
+    getUnderlyingBalancesForPool 
+} from "./fetch-data";
+    // ABIS
 import iFuseLens from "../Interfaces/iFuseLens";
 
 
@@ -22,44 +28,56 @@ import iFuseLens from "../Interfaces/iFuseLens";
  * @param poolId - The pool's id.
  * @returns An interface that'll let apps interact with the given fuse pool. (read/write functions).
  */
-export const Pool = function(
+export const Pool = async function(
     provider: Web3Provider | JsonRpcProvider,
     chainId: number,
     poolId: number
-): PoolInstance | undefined {
+): Promise<PoolInstance | undefined> {
     if(!provider  || !chainId || !poolId) {
         return undefined
     }
 
     const addresses = getAddresses(chainId)
     const oracleHashes = getOracleHashes(chainId)
-
-    const fuseLensInterface = iFuseLens
-
     const fuseLensContract = new Contract(
         addresses.FUSE_POOL_LENS_CONTRACT_ADDRESS,
-        fuseLensInterface,
+        iFuseLens,
         provider
     )
 
     const secondaryFuseLensContract = new Contract(
         addresses.FUSE_POOL_LENS_SECONDARY_CONTRACT_ADDRESS,
-        fuseLensInterface,
+        iFuseLens,
         provider
     )
+
+
+    let data: FusePoolData
+    try {
+        data = await fetchFusePoolData(addresses.FUSE_POOL_DIRECTORY_CONTRACT_ADDRESS, provider, poolId, oracleHashes)
+    } catch (e) {
+        throw e
+    }
     
-    const instance: PoolInstance = {
+    const instance: any = {
         poolId,
+        poolData: data,
         contracts: {
             fuseLens: fuseLensContract,
             secondaryFuseLens: secondaryFuseLensContract
         },
-        _provider: provider,
-        addresses,
-        oracleHashes,
-        ...fetching,
-        ...market,
+        fetch: {
+            getMarketsWithData: getMarketsWithData.bind({contracts: {fuseLensContract}}, data.comptroller),
+            fetchAvailableRdsWithContext: fetchAvailableRdsWithContext.bind(null, data.comptroller, provider)
+        },
+        utils: {
+            fetchTokenBalance: fetchTokenBalance.bind(null, provider),
+            getDecimals: getDecimals.bind(null, provider),
+            getEthUsdPriceBN,
+            getUnderlyingBalancesForPool
+        }
     };
+
 
     return instance
 }

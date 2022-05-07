@@ -2,6 +2,8 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { WeiPerEther } from '@ethersproject/constants';
 import { Contract } from "@ethersproject/contracts";
+import { Provider } from '@ethersproject/abstract-provider';
+import { Zero } from '@ethersproject/constants';
 
 // Interfaces
 import iERC20 from "../../../Interfaces/iERC20";
@@ -14,29 +16,28 @@ import iERC20 from "../../../Interfaces/iERC20";
  * @returns - The user's balance. Number or BigNumber.
  */
 export async function fetchTokenBalance (
+    provider: Provider,
     tokenAddress: string | undefined,
     address?: string,
     parse?: boolean
   ): Promise<number | BigNumber> {
-    let balance;
-  
-    // if (chainId !== 1) return constants.Zero;
+    let balance: BigNumber;
   
     if (!tokenAddress) return 0;
   
     if (!address || address === "0x0000000000000000000000000000000000000000") {
-      balance = "0";
+      balance = Zero;
     } else if (
       tokenAddress === "0x0000000000000000000000000000000000000000" ||
       tokenAddress === "NO_ADDRESS_HERE_USE_WETH_FOR_ADDRESS"
     ) {
-      balance = await this._provider.getBalance(address);
+      balance = await provider.getBalance(address);
     } else {
 
       const contract = new Contract(
         tokenAddress,
         iERC20,
-        this._provider
+        provider
       );
 
       balance = await contract.callStatic.balanceOf(address);
