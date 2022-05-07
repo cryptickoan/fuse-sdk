@@ -7,7 +7,7 @@ import { JsonRpcProvider } from '@ethersproject/providers'
 import { ChildProcessWithoutNullStreams } from 'child_process'
 
 // Utils
-import { execWaitForOutput } from './utils'
+import { spawnAndWaitForOutput } from './utils'
 import testSuite from './utils/constants'
 
 // SDK
@@ -20,18 +20,19 @@ describe('Fuse', () => {
 
     beforeAll(async () => {
         try {
-            anvilNodeProcess = await execWaitForOutput(
+            anvilNodeProcess = await spawnAndWaitForOutput(
                 "anvil", 
                 [`--fork-url ${process.env.RPC_URL} --fork-block-number ${process.env.BLOCK_NUM}`]
             )
 
         } catch(e) {
-            console.log(e)
+            console.error(e)
         }
 
         const provider = new JsonRpcProvider("http://127.0.0.1:8545")
         fuse = Pool(provider, 1, 1)
     })
+
 
     it("Should return the correct data for given Fuse pool", async () => {
         const data = await fuse.fetchFusePoolData()
