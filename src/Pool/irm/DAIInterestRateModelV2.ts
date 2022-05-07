@@ -1,4 +1,4 @@
-import JumpRateModel from "./JumpRateModel.js";
+import JumpRateModel from "./JumpRateModel";
 import { BigNumber } from "@ethersproject/bignumber";
 import { Contract } from "@ethersproject/contracts";
 import { Interface } from "@ethersproject/abi";
