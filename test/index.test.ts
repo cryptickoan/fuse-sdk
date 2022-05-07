@@ -2,17 +2,16 @@ import 'dotenv/config'
 
 // Ethers
 import { JsonRpcProvider } from '@ethersproject/providers'
+import { Zero } from '@ethersproject/constants'
 
 // Types
 import { ChildProcessWithoutNullStreams } from 'child_process'
 
 // Utils
 import { spawnAndWaitForOutput } from './utils'
-import testSuite from './utils/constants'
 
 // SDK
 import { Pool } from '../src'
-import { PoolInstance } from '../src/Pool/types'
 import colors from 'colors'
 
 describe('Fuse', () => {
@@ -21,14 +20,15 @@ describe('Fuse', () => {
 
     beforeAll(async () => {
 
-        if (!(process.env.NODE === 'true')) {
+        if (!(process.env.NODE === 'false')) {
             try {
                 console.log(colors.yellow('Initiating Anvil Node'))
                     anvilNodeProcess = await spawnAndWaitForOutput(
                         "anvil", 
                         [`--fork-url ${process.env.RPC_URL} --fork-block-number ${process.env.BLOCK_NUM}`]
                     )
-                console.log(colors.green('Node was initiated succcessfully!'))
+
+                console.log(colors.green(`Node initiated successfuly! ` + colors.cyan(`PID: ${anvilNodeProcess.pid}`).bold))
 
             } catch(e) {
                 console.error(e)
@@ -41,37 +41,35 @@ describe('Fuse', () => {
     })
 
 
-    it("Should return the correct pool data for given Fuse pool", async () => {
+    it("Should return zero", async () => {
         let data
         try {
-            console.log(fuse)
             data = await fuse.utils.fetchTokenBalance('0x6b175474e89094c44da98b954eedeac495271d0f')
-            console.log({data})
         } catch(e) {
             console.log(e)
         }
-        expect(Object.keys(data).length).toBe(5)
-        expect(data.comptroller).toBe(testSuite.fetchFusePoolData.comptroller)
-        console.log('here')
+        expect(data).toBe(Zero)
+        // expect(data.comptroller).toBe(testSuite.fetchFusePoolData.comptroller)
+        // console.log('here')
     })
 
-    it("Should return the correct market data for given Fuse pool", async () => {
-        const data = await fuse.getPool()
-        expect(Object.keys(data).length).toBe(5)
-        expect(data.comptroller).toBe(testSuite.getPool.comptroller)
-        expect(data.creator).toBe(testSuite.getPool.creator)
+    // it("Should return the correct market data for given Fuse pool", async () => {
+    //     const data = await fuse.getPool()
+    //     expect(Object.keys(data).length).toBe(5)
+    //     expect(data.comptroller).toBe(testSuite.getPool.comptroller)
+    //     expect(data.creator).toBe(testSuite.getPool.creator)
 
-        const markets = await fuse.getMarketsWithData(data.comptroller)
-        expect(markets.assets.length).toBe(testSuite.getMarketsWithData.assetsLength)
-        expect(Object.values(markets).length).toBe(testSuite.getMarketsWithData.responseLength)
-    })
+    //     const markets = await fuse.getMarketsWithData(data.comptroller)
+    //     expect(markets.assets.length).toBe(testSuite.getMarketsWithData.assetsLength)
+    //     expect(Object.values(markets).length).toBe(testSuite.getMarketsWithData.responseLength)
+    // })
 
 
     
     afterAll(() => {
-        if (!(process.env.NODE === 'true')) {
-            console.log(colors.green('Anvil node turned off successfully!'))
+        if (!(process.env.NODE === 'false')) {
             anvilNodeProcess.kill()
+            console.log(colors.green('Anvil node terminated successfully!'))
         }
     })
 })
