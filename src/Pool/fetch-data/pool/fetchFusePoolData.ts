@@ -12,8 +12,13 @@ import { getPool } from "./getPool";
 import { Provider } from "@ethersproject/abstract-provider";
 import { identifyPriceOracle } from "./identifyPriceOracle";
 
+
 /**
- * @returns - General pool data of the given pool. i.e Pool name, admin's address, oracle address, oracle model and comptroller's address.
+ * @param fuseDirectoryAddress - Address for the fuse directory contract.
+ * @param provider - An ethers provider.
+ * @param poolId - The pool ID.
+ * @param oracleHashes - A list of all known oracle hashes. Used to identify oracle version.
+ * @returns - General pool data of the given pool. i.e Pool name, admin's address, oracle address, oracle model and comptroller's address. 
  */
 export async function fetchFusePoolData (
     fuseDirectoryAddress: string,
@@ -39,7 +44,7 @@ export async function fetchFusePoolData (
     const comptrollerContract = new Contract(
         comptroller,
         iComptroller,
-        this._provider
+        provider
     )
 
     // 3. Get Oracle and oracle model.

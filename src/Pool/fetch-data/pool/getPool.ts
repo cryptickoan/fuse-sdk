@@ -17,12 +17,12 @@ import { Provider } from "@ethersproject/abstract-provider"
      provider: Provider,
      poolId: number
  ): Promise<PoolInformation> {
+
     const fusePoolDirectoryContract = new Contract(
         fuseDirectoryAddress,
         iFuseDirectory,
         provider
     )
-
 
     const poolInformation = await fusePoolDirectoryContract.callStatic.pools(poolId)
     const parsedPoolInformation = filterOnlyObjectProperties(poolInformation)

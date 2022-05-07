@@ -59,9 +59,7 @@ export const Pool = function(
             secondaryFuseLens: secondaryFuseLensContract
         },
         _provider: provider,
-        addresses,
-        oracleHashes,
-        fetchFusePoolData: fetchFusePoolData.bind({provider, poolId, addresses, getPool, identifyPriceOracle})
+        fetchFusePoolData: fetchFusePoolData.bind(null, addresses.FUSE_POOL_DIRECTORY_CONTRACT_ADDRESS, provider, poolId, oracleHashes)
     };
 
 
