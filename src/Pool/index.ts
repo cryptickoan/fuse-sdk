@@ -20,6 +20,7 @@ import {
 } from "./fetch-data";
     // ABIS
 import iFuseLens from "../Interfaces/iFuseLens";
+import { checkAllowance } from "./utils/checkAllowance";
 
 
 /**
@@ -58,14 +59,11 @@ export const Pool = async function(
     } catch (e) {
         throw e
     }
+
     
     const instance: any = {
         poolId,
-        poolData: data,
-        contracts: {
-            fuseLens: fuseLensContract,
-            secondaryFuseLens: secondaryFuseLensContract
-        },
+        ...data,
         fetch: {
             getMarketsWithData: getMarketsWithData.bind({contracts: {fuseLensContract}}, data.comptroller),
             fetchAvailableRdsWithContext: fetchAvailableRdsWithContext.bind(null, data.comptroller, provider)
@@ -74,7 +72,8 @@ export const Pool = async function(
             fetchTokenBalance: fetchTokenBalance.bind(null, provider),
             getDecimals: getDecimals.bind(null, provider),
             getEthUsdPriceBN,
-            getUnderlyingBalancesForPool
+            getUnderlyingBalancesForPool,
+            checkAllowance: checkAllowance.bind(null, provider)
         }
     };
 

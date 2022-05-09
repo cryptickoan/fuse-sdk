@@ -2,7 +2,7 @@ import 'dotenv/config'
 
 // Ethers
 import { JsonRpcProvider } from '@ethersproject/providers'
-import { Zero } from '@ethersproject/constants'
+import { Zero, MaxUint256 } from '@ethersproject/constants'
 
 // Types
 import { ChildProcessWithoutNullStreams } from 'child_process'
@@ -13,6 +13,7 @@ import { spawnAndWaitForOutput } from './utils'
 // SDK
 import { Pool } from '../src'
 import colors from 'colors'
+import { BigNumber } from 'ethers'
 
 describe('Fuse', () => {
     let anvilNodeProcess: ChildProcessWithoutNullStreams
@@ -64,8 +65,70 @@ describe('Fuse', () => {
     //     expect(Object.values(markets).length).toBe(testSuite.getMarketsWithData.responseLength)
     // })
 
+    describe('checkAllowance', () => {
+        it("Should not approve and should return right information", async () => {
+            try {
+                const answer = await fuse.utils.checkAllowance(
+                    "0x6b175474e89094c44da98b954eedeac495271d0f",
+                    "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+                    "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+                    "1000",
+                    false
+                )
 
-    
+                expect(answer.hasApprovedEnough).toBe(false)
+                expect(answer.allowance).toBe(Zero)
+            } catch {
+
+            }
+        })
+
+        it("Should approve max amount", async () => {
+            try {
+                // Approve
+                await fuse.utils.checkAllowance(
+                    "0x6b175474e89094c44da98b954eedeac495271d0f",
+                    "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+                    "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+                    "1000",
+                    true
+                )
+
+                // Check 
+                const answer2 = await fuse.utils.checkAllowance(
+                    "0x6b175474e89094c44da98b954eedeac495271d0f",
+                    "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+                    "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+                    "1000",
+                    false
+                )
+
+                expect(answer2.hasApprovedEnough).toBe(false)
+                expect(answer2.allowance).toBe(MaxUint256)
+            } catch {
+
+            }
+        })
+
+        it("Should work fine if given token decimals", async () => {
+            try {
+                const answer = await fuse.utils.checkAllowance(
+                    "0x6b175474e89094c44da98b954eedeac495271d0f",
+                    "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+                    "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+                    "1000",
+                    false,
+                    BigNumber.from(18)
+                )
+
+                expect(answer.hasApprovedEnough).toBe(false)
+                expect(answer.allowance).toBe(Zero)
+            } catch {
+
+            }
+        })
+    })
+
     afterAll(() => {
         if (!(process.env.NODE === 'false')) {
             anvilNodeProcess.kill()

@@ -42,8 +42,8 @@ export async function marketInteraction(
         // Fetch decimals if not given.
         if(!decimals && !isEth){
             decimals = await getDecimals(
-                tokenAddress,
-                provider
+                provider,
+                tokenAddress
             )
         }
 
