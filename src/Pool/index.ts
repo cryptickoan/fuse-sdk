@@ -3,25 +3,27 @@ import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import { Contract } from "@ethersproject/contracts";
 
 // Internal
-    // Utils
-import { getAddresses } from "./utils/getAddresses";
-import { getOracleHashes } from "./utils/getOracleHashes";
     // Types
 import { FusePoolData, PoolInstance } from "./types";
     // Functions
 import { 
     fetchAvailableRdsWithContext, 
-    fetchTokenBalance, 
     fetchFusePoolData,
+    getMarketsWithData, 
+} from "./fetch-data";
+import {
+    fetchTokenBalance, 
     getDecimals, 
     getEthUsdPriceBN, 
-    getMarketsWithData, 
-    getUnderlyingBalancesForPool 
-} from "./fetch-data";
+    getUnderlyingBalancesForPool,
+    getOracleHashes,
+    getAddresses
+} from './utils'
     // ABIS
 import iFuseLens from "../Interfaces/iFuseLens";
 import { checkAllowance } from "./utils/checkAllowance";
 import { approve } from "./utils/approve";
+import { marketInteraction } from "./market-interactions";
 
 
 /**
@@ -46,7 +48,6 @@ export const Pool = async function(
         iFuseLens,
         provider
     )
-
     const secondaryFuseLensContract = new Contract(
         addresses.FUSE_POOL_LENS_SECONDARY_CONTRACT_ADDRESS,
         iFuseLens,
@@ -68,6 +69,12 @@ export const Pool = async function(
         fetch: {
             getMarketsWithData: getMarketsWithData.bind({contracts: {fuseLensContract}}, data.comptroller),
             fetchAvailableRdsWithContext: fetchAvailableRdsWithContext.bind(null, data.comptroller, provider)
+        },
+        interact:{
+            supply: marketInteraction.bind(null, provider, 'supply'),
+            withdraw: marketInteraction.bind(null, provider, 'withdraw'),
+            borrow: marketInteraction.bind(null, provider, 'borrow'),
+            repay: marketInteraction.bind(null, provider, 'repay'),
         },
         utils: {
             fetchTokenBalance: fetchTokenBalance.bind(null, provider),

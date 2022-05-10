@@ -3,7 +3,7 @@ import { Interface } from "@ethersproject/abi"
 import { BigNumber } from "@ethersproject/bignumber"
 import { Contract } from "@ethersproject/contracts"
 import { Provider } from '@ethersproject/abstract-provider'
-import iERC20 from "../../../Interfaces/iERC20"
+import iERC20 from "../../Interfaces/iERC20"
 
 /**
  * @param provider - An initiated ethers provider.

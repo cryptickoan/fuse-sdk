@@ -187,6 +187,12 @@ describe('Fuse', () => {
         })
     })
 
+    describe('Market Interactions', () => {
+        it('Should supply', () => {
+            
+        })
+    })
+
     afterAll(() => {
         if (!(process.env.NODE === 'false')) {
             anvilNodeProcess.kill()

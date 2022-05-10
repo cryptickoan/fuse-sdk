@@ -6,7 +6,7 @@ import { Provider } from '@ethersproject/abstract-provider';
 import { Zero } from '@ethersproject/constants';
 
 // Interfaces
-import iERC20 from "../../../Interfaces/iERC20";
+import iERC20 from "../../Interfaces/iERC20";
 
 /**
  * 

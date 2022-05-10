@@ -7,7 +7,7 @@ import { Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
 // Internal
     // Utils
 import { testForCTokenErrorAndSend } from "./utils/testForCTokenErrorAndSend";
-import { getDecimals } from "../fetch-data/misc/getDecimals";
+import { getDecimals } from "../utils/getDecimals";
     // Types
 import { marketInteractionType } from "../types";
     // Interfaces
@@ -21,11 +21,11 @@ import iCToken from "../../Interfaces/iCToken";
  * @param decimals - Underlying token's decimals. i.e DAI = 18.
  */
 export async function marketInteraction(
+    provider: Web3Provider | JsonRpcProvider,
     action: marketInteractionType,
     cTokenAddress: string,
     amount: string,
     tokenAddress: string,
-    provider: Web3Provider | JsonRpcProvider,
     decimals?: BigNumber,
 ) {
 
