@@ -21,7 +21,7 @@
   "scripts": {
     "postinstall":"typechain",
     "test": "jest",
-    "anvil": "anvil --fork-url https://eth-mainnet.alchemyapi.io/v2/2Mt-6brbJvTA4w9cpiDtnbTo6qOoySnN --fork-block-number 14610872 -vvvvv"
+    "ts-jest": "^28.0.2"
   },
   "repository": {
     "type": "git",
