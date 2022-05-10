@@ -23,7 +23,7 @@ import {
 import iFuseLens from "../Interfaces/iFuseLens";
 import { checkAllowance } from "./utils/checkAllowance";
 import { approve } from "./utils/approve";
-import { marketInteraction } from "./market-interactions";
+import { collateral, marketInteraction } from "./market-interactions";
 
 
 /**
@@ -75,6 +75,8 @@ export const Pool = async function(
             withdraw: marketInteraction.bind(null, provider, 'withdraw'),
             borrow: marketInteraction.bind(null, provider, 'borrow'),
             repay: marketInteraction.bind(null, provider, 'repay'),
+            enterMarkets: collateral.bind(null, provider, data.comptroller, 'enter'),
+            exitMarkets: collateral.bind(null, provider, data.comptroller, 'exit')
         },
         utils: {
             fetchTokenBalance: fetchTokenBalance.bind(null, provider),

@@ -12,23 +12,23 @@ import { actionType } from "../types";
  * @param action - Enter or exit.
  */
 export async function collateral(
+    provider: Web3Provider | JsonRpcProvider,
     comptrollerAddress: string,
-    marketAddress: string[],
     action: actionType,
-    provider: Web3Provider | JsonRpcProvider
+    marketAddress: string[]
 ) {
     const comptrollerInterface = new Interface([
-        'function enterMarkets(address[] calldata cTokens) external returns (uint[] memory)',
+        'function enterMarkets(address[]) external returns (uint[])',
         'function exitMarket(address cTokenAddress) external returns (uint) '
     ])
 
     const comptrollerContract = new Contract(
         comptrollerAddress,
         comptrollerInterface,
-        provider.getSigner()
+        provider.getSigner('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
     )
 
-    // Don't await this, we don't care if it gets executed first!
+    console.log('hey', provider, comptrollerAddress, action, marketAddress, comptrollerContract)
     if (action === "enter") {
         await comptrollerContract.enterMarkets(marketAddress);
     } else {

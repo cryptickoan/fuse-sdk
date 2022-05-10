@@ -48,11 +48,12 @@ describe('Fuse', () => {
     // it("Should return zero", async () => {
     //     let data
     //     try {
-    //         data = await fuse.utils.fetchTokenBalance('0x6b175474e89094c44da98b954eedeac495271d0f')
+    //         data = await fuse.fetch.getMarketsWithData()
+    //         console.log({fh: data.totalSupplyBalanceUSD.toString()})
     //     } catch(e) {
-            // console.log(e)
+    //         console.log(e)
     //     }
-    //     expect(data).toBe(Zero)
+    //     // expect(data).toBe(Zero)
     //     // expect(data.comptroller).toBe(testSuite.fetchFusePoolData.comptroller)
     //     // console.log('here')
     // })
@@ -217,17 +218,19 @@ describe('Fuse', () => {
                 iComptroller,
                 provider.getSigner()
             )
-            
-            const shouldBeFalse = await comptroller.callStatic.suppliers('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
-            await fuse.interact.supply(
+
+            const shouldBeFalse = (await comptroller.callStatic.getAllBorrowers()).includes('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
+            await fuse.interact.enterMarkets(['0xe92a3db67e4b6AC86114149F522644b34264f858'])
+            await fuse.interact.borrow(
                 "0xe92a3db67e4b6AC86114149F522644b34264f858",
-                "2000",
+                "1",
                 "0x0000000000000000000000000000000000000000",
             )
-            
-            const shouldBeTrue = await comptroller.callStatic.suppliers('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
-            expect(shouldBeTrue).toBe(true)
+
+            const shouldBeTrue = (await comptroller.callStatic.getAllBorrowers()).includes('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
+
             expect(shouldBeFalse).toBe(false)
+            expect(shouldBeTrue).toBe(true)
         })
     })
 
