@@ -28,7 +28,6 @@ export async function collateral(
         provider.getSigner('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
     )
 
-    console.log('hey', provider, comptrollerAddress, action, marketAddress, comptrollerContract)
     if (action === "enter") {
         await comptrollerContract.enterMarkets(marketAddress);
     } else {

@@ -14,7 +14,7 @@ import { spawnAndWaitForOutput } from './utils'
 import { Pool } from '../src'
 import colors from 'colors'
 import { BigNumber, Contract } from 'ethers'
-import { parseEther } from 'ethers/lib/utils'
+import { formatEther, parseEther } from 'ethers/lib/utils'
 import iComptroller from '../src/Interfaces/iComptroller'
 
 describe('Fuse', () => {
@@ -209,6 +209,7 @@ describe('Fuse', () => {
             const shouldBeTrue = await comptroller.callStatic.suppliers('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
             expect(shouldBeTrue).toBe(true)
             expect(shouldBeFalse).toBe(false)
+            const balance = await fuse.utils.fetchTokenBalance('0x0000000000000000000000000000000000000000', '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
         })
 
         it('Should borrow', async () => {
@@ -228,9 +229,32 @@ describe('Fuse', () => {
             )
 
             const shouldBeTrue = (await comptroller.callStatic.getAllBorrowers()).includes('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
-
+            const balance = await fuse.utils.fetchTokenBalance('0x0000000000000000000000000000000000000000', '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
+            expect(formatEther(balance)).toBe('8000.962533706705321478')
             expect(shouldBeFalse).toBe(false)
             expect(shouldBeTrue).toBe(true)
+        })
+
+        it('Should repay', async () => {
+            await fuse.interact.repay(
+                "0xe92a3db67e4b6AC86114149F522644b34264f858",
+                "1",
+                "0x0000000000000000000000000000000000000000"
+            )
+
+            const balance = await fuse.utils.fetchTokenBalance('0x0000000000000000000000000000000000000000', '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
+            expect(formatEther(balance)).toBe( "7999.955433064390134145")
+        })
+
+        it('Should withdraw', async () => {
+            await fuse.interact.withdraw(
+                "0xe92a3db67e4b6AC86114149F522644b34264f858",
+                "1500",
+                "0x0000000000000000000000000000000000000000"
+            )
+
+            const balance = await fuse.utils.fetchTokenBalance('0x0000000000000000000000000000000000000000', '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
+            expect(formatEther(balance)).toBe("9499.946798726331950125")
         })
     })
 

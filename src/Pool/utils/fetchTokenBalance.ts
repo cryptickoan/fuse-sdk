@@ -25,9 +25,7 @@ export async function fetchTokenBalance (
   
     if (!tokenAddress) return 0;
   
-    if (!address || address === "0x0000000000000000000000000000000000000000") {
-      balance = Zero;
-    } else if (
+    if (
       tokenAddress === "0x0000000000000000000000000000000000000000" ||
       tokenAddress === "NO_ADDRESS_HERE_USE_WETH_FOR_ADDRESS"
     ) {

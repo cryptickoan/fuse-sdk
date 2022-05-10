@@ -29,7 +29,6 @@ export async function marketInteraction(
     underlyingAddress: string,
     decimals?: BigNumber,
 ) {
-    console.log({provider, action, cTokenAddress, amount, underlyingAddress})
     // 1. Initiate market/ctoken contract.
     const cTokenContract = new Contract(
         cTokenAddress,
