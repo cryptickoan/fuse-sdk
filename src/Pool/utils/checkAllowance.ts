@@ -40,7 +40,7 @@ export async function checkAllowance(
 
     // 2. Get decimals if they werent provided.
     if (!decimals) {
-        decimals = await getDecimals(provider, tokenAddress)
+        decimals = await erc20Contract.callStatic.decimals()
     }
 
     // 3. Parse value to uint256 contract call.

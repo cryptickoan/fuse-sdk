@@ -14,6 +14,7 @@ import { spawnAndWaitForOutput } from './utils'
 import { Pool } from '../src'
 import colors from 'colors'
 import { BigNumber } from 'ethers'
+import { parseEther } from 'ethers/lib/utils'
 
 describe('Fuse', () => {
     let anvilNodeProcess: ChildProcessWithoutNullStreams
@@ -126,6 +127,63 @@ describe('Fuse', () => {
             } catch {
 
             }
+        })
+    })
+
+    describe('approve', () => {
+        it('Should approve maxAmount', async () => {
+            const answer = await fuse.utils.checkAllowance(
+                "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+                "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+                "1000",
+                false
+            )
+            
+            await fuse.utils.approve(
+                "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+                "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            )
+
+            const answer2 = await fuse.utils.checkAllowance(
+                "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+                "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+                "1000",
+                false
+            )
+
+            expect(answer.hasApprovedEnough).toBe(false)
+            expect(answer2.allowance).toStrictEqual(MaxUint256)
+        })
+
+        it('Should approve given amount', async () => {
+            const answer = await fuse.utils.checkAllowance(
+                "0x956F47F50A910163D8BF957Cf5846D573E7f87CA",
+                "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+                "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+                "1000",
+                false
+            )
+            
+            await fuse.utils.approve(
+                "0x956F47F50A910163D8BF957Cf5846D573E7f87CA",
+                "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+                "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+                "1000"
+            )
+
+            const answer2 = await fuse.utils.checkAllowance(
+                "0x956F47F50A910163D8BF957Cf5846D573E7f87CA",
+                "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+                "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+                "1000",
+                false
+            )
+
+            expect(answer.hasApprovedEnough).toBe(false)
+            expect(answer2.allowance).toStrictEqual(parseEther("1000"))
         })
     })
 

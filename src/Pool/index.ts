@@ -21,6 +21,7 @@ import {
     // ABIS
 import iFuseLens from "../Interfaces/iFuseLens";
 import { checkAllowance } from "./utils/checkAllowance";
+import { approve } from "./utils/approve";
 
 
 /**
@@ -73,7 +74,8 @@ export const Pool = async function(
             getDecimals: getDecimals.bind(null, provider),
             getEthUsdPriceBN,
             getUnderlyingBalancesForPool,
-            checkAllowance: checkAllowance.bind(null, provider)
+            checkAllowance: checkAllowance.bind(null, provider),
+            approve: approve.bind(null, provider)
         }
     };
 
