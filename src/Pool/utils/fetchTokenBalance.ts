@@ -18,7 +18,7 @@ import iERC20 from "../../Interfaces/iERC20";
 export async function fetchTokenBalance (
     provider: Provider,
     tokenAddress: string | undefined,
-    address?: string,
+    address: string,
     parse?: boolean
   ): Promise<number | BigNumber> {
     let balance: BigNumber;

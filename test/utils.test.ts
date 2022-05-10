@@ -10,6 +10,7 @@ import { BigNumber, Contract } from 'ethers'
 import { formatEther, parseEther } from 'ethers/lib/utils'
 
 const provider = new JsonRpcProvider("http://127.0.0.1:8545")
+
 export const utilsTests = () => {
     describe('checkAllowance', () => {
         it("Should not approve and should return right information", async () => {
@@ -136,4 +137,36 @@ export const utilsTests = () => {
             expect(answer2.allowance).toStrictEqual(parseEther("1000"))
         })
     })
+
+    describe('getDecimals', () => {
+        it('Should return 18', async () => {
+            const fuse: any = await Pool(provider, 1, 156)
+            const decimals = await fuse.utils.getDecimals(
+                "0x6b175474e89094c44da98b954eedeac495271d0f"
+            )
+
+            expect(decimals.toString()).toBe('18')
+        })
+    })
+
+    describe('fetchTokenBalance', () => {
+        it('Should give back token balance', async () => {
+            const fuse: any = await Pool(provider, 1, 156)
+            const balance = await fuse.utils.fetchTokenBalance(
+                "0x6b175474e89094c44da98b954eedeac495271d0f",
+                "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+            )
+
+            const ethBalance = await fuse.utils.fetchTokenBalance(
+                "0x0000000000000000000000000000000000000000",
+                "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+            )
+
+
+            expect(balance).toStrictEqual(Zero)
+            expect(ethBalance.gt(BigNumber.from(9000))).toBe(true)
+        })
+    })
 }
+
+describe('utils', utilsTests)

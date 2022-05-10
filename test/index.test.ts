@@ -18,8 +18,10 @@ describe('Fuse', () => {
         anvilNodeProcess = await initiateAnvilNode()
     })
 
-    describe('utils', utilsTests)
-    describe('market-interactions', marketInteractionTests)
+    describe('Pool', () => {
+        describe('utils', utilsTests)
+        describe('market-interactions', marketInteractionTests)
+    })
 
 
     afterAll(() => {

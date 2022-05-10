@@ -83,3 +83,5 @@ export const marketInteractionTests = () => {
             expect(formatEther(balance)).toContain("9499")
         })
 }
+
+describe('Market Interactions', marketInteractionTests)
