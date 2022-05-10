@@ -5,7 +5,7 @@ import { convertMantissaToAPY, convertMantissaToAPR } from "./utils/convertManti
 import { Provider } from '@ethersproject/abstract-provider'
 import { fetchRewardSpeedInMarket } from "./fetchRewardSpeedsInMarket"
 import { fetchRewardTokenInRd } from "./fetchRewardTokenInRd"
-import { getDecimals } from "../misc"
+import { getDecimals } from "../../utils"
 import { getMarketsWithData, getPriceFromOracle } from "../markets"
 import { formatUnits, parseUnits } from "ethers/lib/utils"
 
