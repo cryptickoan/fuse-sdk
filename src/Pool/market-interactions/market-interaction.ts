@@ -14,10 +14,11 @@ import { marketInteractionType } from "../types";
 import iCToken from "../../Interfaces/iCToken";
 
 /**
+ * @param provider - An initiated ethers provider.
  * @param action - Type of action to perform. i.e borrow, withdraw, repay.
  * @param cTokenAddress - Address of market to withdraw from.
  * @param amount - The amount to withdraw.
- * @param tokenAddress - Address of the market's underlying asset.
+ * @param underlyingAddress - Address of the market's underlying asset.
  * @param decimals - Underlying token's decimals. i.e DAI = 18.
  */
 export async function marketInteraction(
@@ -25,10 +26,9 @@ export async function marketInteraction(
     action: marketInteractionType,
     cTokenAddress: string,
     amount: string,
-    tokenAddress: string,
+    underlyingAddress: string,
     decimals?: BigNumber,
 ) {
-
     // 1. Initiate market/ctoken contract.
     const cTokenContract = new Contract(
         cTokenAddress,
@@ -36,19 +36,19 @@ export async function marketInteraction(
         provider.getSigner()
     )
 
-    const isEth = tokenAddress === "0x0000000000000000000000000000000000000000"
+    const isEth = underlyingAddress === "0x0000000000000000000000000000000000000000"
 
     // 2. Parse given amount to the underlying asset's notation.
         // Fetch decimals if not given.
         if(!decimals && !isEth){
             decimals = await getDecimals(
                 provider,
-                tokenAddress
+                underlyingAddress
             )
         }
 
     // 3. Parse given amount.
-    const parsedAmount = decimals.eq(18) || isEth 
+    const parsedAmount = decimals?.eq(18) || isEth 
         ? parseEther(amount) 
         : parseUnits(amount, decimals)
     

@@ -5,6 +5,7 @@ const iComptroller = new Interface([
     'function getAllMarkets() view returns (address[])',
     'function oracle() returns (address)',
     'function admin() returns (address)',
+    'function suppliers(address) returns (bool)'
 ])
 
 export default iComptroller
