@@ -3,10 +3,8 @@ import { One } from '@ethersproject/constants';
 import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
 import { parseEther, parseUnits } from '@ethersproject/units';
-import { Interface } from '@ethersproject/abi';
 import { Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
 import iERC20 from '../../Interfaces/iERC20';
-import { getDecimals } from '../fetch-data';
 
 /**
  * This function will check current allowance for the given spender.
