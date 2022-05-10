@@ -17,7 +17,7 @@
     "ts-jest": "^28.0.1"
   },
   "scripts": {
-    "test": "jest --config jestconfig.json",
+    "test": "jest --config jestconfig.json ./test/index.test.ts",
     "anvil": "anvil --fork-url https://eth-mainnet.alchemyapi.io/v2/2Mt-6brbJvTA4w9cpiDtnbTo6qOoySnN --fork-block-number 14610872 -vvvvv"
   },
   "repository": {
