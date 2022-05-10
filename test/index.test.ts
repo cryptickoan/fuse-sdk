@@ -201,39 +201,39 @@ describe('Fuse', () => {
             expect(shouldBeTrue).toBe(true)
         })
 
-        // it('Should borrow', async () => {
-        //     jest.setTimeout(900 * 1000)
-        //     await fuse.interact.enterMarkets(['0xe92a3db67e4b6AC86114149F522644b34264f858'])
-        //     await fuse.interact.borrow(
-        //         "0xe92a3db67e4b6AC86114149F522644b34264f858",
-        //         "1",
-        //         "0x0000000000000000000000000000000000000000",
-        //     )
+        it('Should borrow', async () => {
+            jest.setTimeout(900 * 1000)
+            await fuse.interact.enterMarkets(['0xe92a3db67e4b6AC86114149F522644b34264f858'])
+            await fuse.interact.borrow(
+                "0xe92a3db67e4b6AC86114149F522644b34264f858",
+                "1",
+                "0x0000000000000000000000000000000000000000",
+            )
 
             
-        // })
+        })
 
-        // it('Should repay', async () => {
-        //     await fuse.interact.repay(
-        //         "0xe92a3db67e4b6AC86114149F522644b34264f858",
-        //         "1",
-        //         "0x0000000000000000000000000000000000000000"
-        //     )
+        it('Should repay', async () => {
+            await fuse.interact.repay(
+                "0xe92a3db67e4b6AC86114149F522644b34264f858",
+                "1",
+                "0x0000000000000000000000000000000000000000"
+            )
 
-        //     const balance = await fuse.utils.fetchTokenBalance('0x0000000000000000000000000000000000000000', '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
-        //     expect(formatEther(balance)).toContain( "7999")
-        // })
+            const balance = await fuse.utils.fetchTokenBalance('0x0000000000000000000000000000000000000000', '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
+            expect(formatEther(balance)).toContain( "7999")
+        })
 
-        // it('Should withdraw', async () => {
-        //     await fuse.interact.withdraw(
-        //         "0xe92a3db67e4b6AC86114149F522644b34264f858",
-        //         "1500",
-        //         "0x0000000000000000000000000000000000000000"
-        //     )
+        it('Should withdraw', async () => {
+            await fuse.interact.withdraw(
+                "0xe92a3db67e4b6AC86114149F522644b34264f858",
+                "1500",
+                "0x0000000000000000000000000000000000000000"
+            )
 
-        //     const balance = await fuse.utils.fetchTokenBalance('0x0000000000000000000000000000000000000000', '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
-        //     expect(formatEther(balance)).toContain("9499")
-        // })
+            const balance = await fuse.utils.fetchTokenBalance('0x0000000000000000000000000000000000000000', '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
+            expect(formatEther(balance)).toContain("9499")
+        })
     })
 
     afterAll(() => {
