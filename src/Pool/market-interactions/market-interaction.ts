@@ -20,6 +20,7 @@ import iCToken from "../../Interfaces/iCToken";
  * @param amount - The amount to withdraw.
  * @param underlyingAddress - Address of the market's underlying asset.
  * @param decimals - Underlying token's decimals. i.e DAI = 18.
+ * @param account - User's account. Used only by an rpc node.
  */
 export async function marketInteraction(
     provider: Web3Provider | JsonRpcProvider,
@@ -28,12 +29,13 @@ export async function marketInteraction(
     amount: string,
     underlyingAddress: string,
     decimals?: BigNumber,
+    account?: string
 ) {
     // 1. Initiate market/ctoken contract.
     const cTokenContract = new Contract(
         cTokenAddress,
         iCToken,
-        provider.getSigner()
+        provider.getSigner(account)
     )
 
     const isEth = underlyingAddress === "0x0000000000000000000000000000000000000000"
@@ -93,7 +95,7 @@ export async function marketInteraction(
                     "Cannot deposit this amount right now!"
                 ); 
             } else {
-                await cTokenContract['mint()']({ 
+                return await cTokenContract['mint()']({ 
                     value: parsedAmount
                 });
             }
