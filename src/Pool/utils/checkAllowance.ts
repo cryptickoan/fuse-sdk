@@ -29,7 +29,7 @@ export async function checkAllowance(
     if (isEth) return
     
     // 1. Create contract.
-    const erc20Contract = ERC20__factory.connect(tokenAddress, provider)
+    const erc20Contract = ERC20__factory.connect(tokenAddress, provider.getSigner())
 
     // 2. Get decimals if they werent provided.
     if (!decimals) {

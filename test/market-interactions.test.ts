@@ -1,9 +1,7 @@
 import 'dotenv/config'
 // SDK
-import { Contract } from 'ethers'
 import { formatEther } from 'ethers/lib/utils'
-import { PoolInstance } from '../src/Pool/types'
-import { JsonRpcProvider, Web3Provider } from '@ethersproject/providers'
+import { JsonRpcProvider } from '@ethersproject/providers'
 import { Pool } from '../src'
 import { Comptroller__factory } from '../src/abis/types'
 const provider = new JsonRpcProvider("http://127.0.0.1:8545")

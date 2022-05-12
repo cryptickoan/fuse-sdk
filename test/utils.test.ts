@@ -15,21 +15,20 @@ export const utilsTests = () => {
     describe('checkAllowance', () => {
         it("Should not approve and should return right information", async () => {
             const fuse: any = await Pool(provider, 1, 156)
-            console.log(fuse)
-            // try {
-            //     const answer = await fuse.utils.checkAllowance(
-            //         "0x6b175474e89094c44da98b954eedeac495271d0f",
-            //         "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-            //         "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-            //         "1000",
-            //         false
-            //     )
+            try {
+                const answer = await fuse.utils.checkAllowance(
+                    "0x6b175474e89094c44da98b954eedeac495271d0f",
+                    "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+                    "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+                    "1000",
+                    false
+                )
 
-            //     expect(answer.hasApprovedEnough).toBe(false)
-            //     expect(answer.allowance).toBe(Zero)
-            // } catch {
+                expect(answer.hasApprovedEnough).toBe(false)
+                expect(answer.allowance).toBe(Zero)
+            } catch {
 
-            // }
+            }
         })
 
         it("Should approve max amount", async () => {

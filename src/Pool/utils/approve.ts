@@ -27,7 +27,7 @@ export async function approve(
     if (isEth) return
     
     // 1. Create contract.
-    const erc20Contract = ERC20__factory.connect(tokenAddress, provider)
+    const erc20Contract = ERC20__factory.connect(tokenAddress, provider.getSigner())
 
     // 2. If a value was provided, parse it.
     let parsedAmount: null | BigNumber = null
