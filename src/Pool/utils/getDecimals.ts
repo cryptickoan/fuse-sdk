@@ -1,9 +1,7 @@
 // Ethers
-import { Interface } from "@ethersproject/abi"
 import { BigNumber } from "@ethersproject/bignumber"
-import { Contract } from "@ethersproject/contracts"
 import { Provider } from '@ethersproject/abstract-provider'
-import iERC20 from "../../Interfaces/iERC20"
+import { ERC20__factory } from "../../abis/types"
 
 /**
  * @param provider - An initiated ethers provider.
@@ -14,11 +12,7 @@ export async function getDecimals(
     provider: Provider,
     tokenAddress: string
 ): Promise<BigNumber> {
-    const erc20Contract = new Contract(
-        tokenAddress,
-        iERC20,
-        provider
-    )
+    const erc20Contract = ERC20__factory.connect(tokenAddress, provider)
 
     return await erc20Contract.callStatic.decimals()
 } 

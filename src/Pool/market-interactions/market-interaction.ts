@@ -11,7 +11,7 @@ import { getDecimals } from "../utils/getDecimals";
     // Types
 import { marketInteractionType } from "../types";
     // Interfaces
-import iCToken from "../../Interfaces/iCToken";
+import { CErc20__factory } from "../../abis/types";
 
 /**
  * @param provider - An initiated ethers provider.
@@ -32,11 +32,7 @@ export async function marketInteraction(
     account?: string
 ) {
     // 1. Initiate market/ctoken contract.
-    const cTokenContract = new Contract(
-        cTokenAddress,
-        iCToken,
-        provider.getSigner(account)
-    )
+    const cTokenContract = CErc20__factory.connect(cTokenAddress, provider)
 
     const isEth = underlyingAddress === "0x0000000000000000000000000000000000000000"
 

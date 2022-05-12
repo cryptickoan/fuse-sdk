@@ -1,7 +1,7 @@
 // Ethers
 import { Contract } from "@ethersproject/contracts"
 import { Provider } from '@ethersproject/abstract-provider'
-import iRewardsDistributor from "../../../Interfaces/iRewardsDistributor"
+import { RewardsDistributor__factory } from "../../../abis/types"
 
 /**
  * @param rdAddress - Address of the reward distributor to query. 
@@ -11,11 +11,7 @@ export async function fetchRewardedMarketsInRd(
     rdAddress : string,
     provider: Provider
 ): Promise<string[]> {
-    const rdContract = new Contract(
-      rdAddress,
-      iRewardsDistributor,
-      provider
-    )
+    const rdContract = RewardsDistributor__factory.connect(rdAddress, provider)
 
     return await rdContract.callStatic.getAllMarkets()
 }

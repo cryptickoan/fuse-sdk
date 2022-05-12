@@ -2,21 +2,17 @@ import 'dotenv/config'
 // SDK
 import { Contract } from 'ethers'
 import { formatEther } from 'ethers/lib/utils'
-import iComptroller from '../src/Interfaces/iComptroller'
 import { PoolInstance } from '../src/Pool/types'
 import { JsonRpcProvider, Web3Provider } from '@ethersproject/providers'
 import { Pool } from '../src'
+import { Comptroller__factory } from '../src/abis/types'
 const provider = new JsonRpcProvider("http://127.0.0.1:8545")
 
 export const marketInteractionTests = () => {
         it('Should supply', async () => {
             const fuse: any = await Pool(provider, 1, 156)
             jest.setTimeout(900 * 1000)
-            const comptroller = new Contract(
-                fuse.comptroller,
-                iComptroller,
-                provider.getSigner()
-            )
+            const comptroller = Comptroller__factory.connect(fuse.comptroller, provider)
             
             const shouldBeFalse = await comptroller.callStatic.suppliers('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
             const receipt = await fuse.interact.supply(
@@ -34,11 +30,7 @@ export const marketInteractionTests = () => {
 
         it('Should enter market', async () => {
             const fuse: any = await Pool(provider, 1, 156)
-            const comptroller = new Contract(
-                fuse.comptroller,
-                iComptroller,
-                provider.getSigner()
-            )
+            const comptroller = Comptroller__factory.connect(fuse.comptroller, provider)
             const shouldBeFalse = (await comptroller.callStatic.getAllBorrowers()).includes('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
             await fuse.interact.enterMarkets(['0xe92a3db67e4b6AC86114149F522644b34264f858'])
             const shouldBeTrue = (await comptroller.callStatic.getAllBorrowers()).includes('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')

@@ -1,10 +1,9 @@
 // Ethers
 import { One } from '@ethersproject/constants';
 import { BigNumber } from '@ethersproject/bignumber';
-import { Contract } from '@ethersproject/contracts';
 import { parseEther, parseUnits } from '@ethersproject/units';
 import { Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
-import iERC20 from '../../Interfaces/iERC20';
+import { ERC20__factory } from '../../abis/types';
 
 /**
  * This function will check current allowance for the given spender.
@@ -30,11 +29,7 @@ export async function checkAllowance(
     if (isEth) return
     
     // 1. Create contract.
-    const erc20Contract = new Contract(
-        tokenAddress,
-        iERC20,
-        provider.getSigner(owner)
-    )
+    const erc20Contract = ERC20__factory.connect(tokenAddress, provider)
 
     // 2. Get decimals if they werent provided.
     if (!decimals) {

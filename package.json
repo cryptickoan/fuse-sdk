@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@typechain/ethers-v5": "^10.0.0",
     "axios": "^0.27.2",
     "bad-words": "^3.0.4",
     "dotenv": "^16.0.0",
@@ -14,10 +15,12 @@
     "@types/jest": "^27.5.0",
     "colors": "^1.4.0",
     "jest": "^28.1.0",
-    "ts-jest": "^28.0.2"
+    "ts-jest": "^28.0.2",
+    "typechain": "^8.0.0"
   },
   "scripts": {
-    "test": "jest ./test/index.test.ts",
+    "postinstall":"typechain",
+    "test": "jest",
     "anvil": "anvil --fork-url https://eth-mainnet.alchemyapi.io/v2/2Mt-6brbJvTA4w9cpiDtnbTo6qOoySnN --fork-block-number 14610872 -vvvvv"
   },
   "repository": {
