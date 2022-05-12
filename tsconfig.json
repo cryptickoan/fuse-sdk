@@ -14,5 +14,6 @@
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
     "outDir": "@fuse/cjs",
     "strictNullChecks": false,
+    "resolveJsonModule": true
   },
 }

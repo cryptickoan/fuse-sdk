@@ -1,13 +1,10 @@
 // Ethers
 import { Contract } from "@ethersproject/contracts"
 import { Provider } from '@ethersproject/abstract-provider'
-import iComptroller from "../../../Interfaces/iComptroller"
-
-// Interface
-import iFlywheel from "../../../Interfaces/iFlywheel"
 
 // Types
 import { RewardsDistributorData } from "../../types"
+import { Comptroller__factory, Flywheel__factory } from "../../../abis/types"
 
 /**
  * @param comptrollerAddress - Address of comptroller to query.
@@ -17,21 +14,13 @@ export async function fetchAvailableRdsWithContext(
     comptrollerAddress: string,
     provider: Provider
   ): Promise<RewardsDistributorData[]> {
-    const comptrollerContract = new Contract(
-      comptrollerAddress,
-      iComptroller,
-      provider
-    )
+    const comptrollerContract = Comptroller__factory.connect(comptrollerAddress, provider)
 
     const availableRds = await comptrollerContract.callStatic.getRewardsDistributors()
 
     const rewardsDistributorWithContext: RewardsDistributorData[] = await Promise.all(availableRds
     .map(async (rdAddress: string) => {
-      const rdContract = new Contract(
-        rdAddress,
-        iFlywheel,
-        provider
-      )
+      const rdContract = Flywheel__factory.connect(rdAddress, provider)
 
       let isFlywheel = false;
       let isRewardsDistributor = false;

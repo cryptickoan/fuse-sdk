@@ -1,7 +1,6 @@
 // Ethers
-import { Interface } from "@ethersproject/abi";
-import { Contract } from "@ethersproject/contracts";
 import { Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
+import { Comptroller__factory } from "../../abis/types";
 
 // SDK
 import { actionType } from "../types";
@@ -15,22 +14,13 @@ export async function collateral(
     provider: Web3Provider | JsonRpcProvider,
     comptrollerAddress: string,
     action: actionType,
-    marketAddress: string[]
+    marketAddress: string[] | string
 ) {
-    const comptrollerInterface = new Interface([
-        'function enterMarkets(address[]) external returns (uint[])',
-        'function exitMarket(address cTokenAddress) external returns (uint) '
-    ])
+    const comptrollerContract = Comptroller__factory.connect(comptrollerAddress, provider.getSigner())
 
-    const comptrollerContract = new Contract(
-        comptrollerAddress,
-        comptrollerInterface,
-        provider.getSigner('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266')
-    )
-
-    if (action === "enter") {
+    if (action === "enter" && typeof marketAddress === 'object') {
         await comptrollerContract.enterMarkets(marketAddress);
-    } else {
+    } if (typeof marketAddress === 'string' && action === "exit") {
         await comptrollerContract.exitMarket(marketAddress);
     }
 }

@@ -7,10 +7,10 @@ import { FusePoolData, OracleHashes } from "../../types";
     // Functions
 import { filterPoolName } from "../utils/filterPoolName";
     // Interfaces
-import iComptroller from "../../../Interfaces/iComptroller";
 import { getPool } from "./getPool";
 import { Provider } from "@ethersproject/abstract-provider";
 import { identifyPriceOracle } from "./identifyPriceOracle";
+import { Comptroller__factory } from "../../../abis/types";
 
 
 /**
@@ -41,11 +41,7 @@ export async function fetchFusePoolData (
     
 
     // 2. Create comptroller contract.
-    const comptrollerContract = new Contract(
-        comptroller,
-        iComptroller,
-        provider
-    )
+    const comptrollerContract = Comptroller__factory.connect(comptroller, provider)
 
     // 3. Get Oracle and oracle model.
     let oracle: string = await comptrollerContract.callStatic.oracle();

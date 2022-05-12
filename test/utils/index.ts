@@ -8,7 +8,6 @@ export async function spawnAndWaitForOutput(
     command: string, 
     execOptions: [] | string[] = []
 ): Promise <ChildProcessWithoutNullStreams>{
-
     return new Promise((resolve, reject) => {
         const childProcess = spawn(command, execOptions, {shell: true});
 
@@ -25,6 +24,7 @@ export const initiateAnvilNode = async () => {
     if (!(process.env.NODE === 'false')) {
         try {
             console.log(colors.yellow('Initiating Anvil Node'))
+                
                 const anvilNodeProcess = await spawnAndWaitForOutput(
                     "anvil", 
                     [`--fork-url ${process.env.RPC_URL} --fork-block-number ${process.env.BLOCK_NUM} --no-storage-caching`]

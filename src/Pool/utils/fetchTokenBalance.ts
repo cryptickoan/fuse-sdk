@@ -1,12 +1,10 @@
 // Ethers
 import { BigNumber } from '@ethersproject/bignumber';
 import { WeiPerEther } from '@ethersproject/constants';
-import { Contract } from "@ethersproject/contracts";
 import { Provider } from '@ethersproject/abstract-provider';
-import { Zero } from '@ethersproject/constants';
 
 // Interfaces
-import iERC20 from "../../Interfaces/iERC20";
+import { ERC20__factory } from '../../abis/types';
 
 /**
  * 
@@ -18,7 +16,7 @@ import iERC20 from "../../Interfaces/iERC20";
 export async function fetchTokenBalance (
     provider: Provider,
     tokenAddress: string | undefined,
-    address?: string,
+    address: string,
     parse?: boolean
   ): Promise<number | BigNumber> {
     let balance: BigNumber;
@@ -32,11 +30,7 @@ export async function fetchTokenBalance (
       balance = await provider.getBalance(address);
     } else {
 
-      const contract = new Contract(
-        tokenAddress,
-        iERC20,
-        provider
-      );
+      const contract = ERC20__factory.connect(tokenAddress, provider)
 
       balance = await contract.callStatic.balanceOf(address);
     }

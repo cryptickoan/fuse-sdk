@@ -6,8 +6,8 @@ import { filterOnlyObjectProperties } from "../utils/filterOnlyObjectProperties"
 
 // Types
 import { PoolInformation } from "../../types"
-import iFuseDirectory from "../../../Interfaces/iFuseDirectory"
 import { Provider } from "@ethersproject/abstract-provider"
+import { FuseDirectory__factory } from "../../../abis/types"
 
 /**
  * @returns - Pool general info. Name, creator, comptroller address and time of creation.
@@ -18,11 +18,7 @@ import { Provider } from "@ethersproject/abstract-provider"
      poolId: number
  ): Promise<PoolInformation> {
 
-    const fusePoolDirectoryContract = new Contract(
-        fuseDirectoryAddress,
-        iFuseDirectory,
-        provider
-    )
+    const fusePoolDirectoryContract = FuseDirectory__factory.connect(fuseDirectoryAddress, provider)
 
     const poolInformation = await fusePoolDirectoryContract.callStatic.pools(poolId)
     const parsedPoolInformation = filterOnlyObjectProperties(poolInformation)

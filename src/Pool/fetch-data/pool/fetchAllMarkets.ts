@@ -1,9 +1,8 @@
 // Ethers
-import { Contract } from "@ethersproject/contracts"
 import { Provider } from '@ethersproject/abstract-provider'
 
 // Interface
-import iComptroller from "../../../Interfaces/iComptroller"
+import { Comptroller__factory } from "../../../abis/types"
 
 /**
  * @param comptrollerAddress - Address of comptroller to query.
@@ -13,11 +12,7 @@ export async function fetchAllMarkets(
     comptrollerAddress: string,
     provider: Provider
   ): Promise<string[]> {
-    const comptrollerContract = new Contract(
-      comptrollerAddress,
-      iComptroller,
-      provider
-    )
+    const comptrollerContract = Comptroller__factory.connect(comptrollerAddress, provider)
 
     const availableMarkets = await comptrollerContract.callStatic.getAllMarkets()
     return availableMarkets
