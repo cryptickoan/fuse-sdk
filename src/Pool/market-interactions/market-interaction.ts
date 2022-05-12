@@ -32,7 +32,7 @@ export async function marketInteraction(
     account?: string
 ) {
     // 1. Initiate market/ctoken contract.
-    const cTokenContract = CErc20__factory.connect(cTokenAddress, provider)
+    const cTokenContract = CErc20__factory.connect(cTokenAddress, provider.getSigner())
 
     const isEth = underlyingAddress === "0x0000000000000000000000000000000000000000"
 

@@ -1,6 +1,24 @@
 [
     {
         "constant": false,
+        "inputs": [],
+        "name": "repayBorrow",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [],
+        "name": "mint",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "constant": false,
         "inputs": [
             {
                 "internalType": "uint256",

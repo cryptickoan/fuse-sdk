@@ -16,7 +16,7 @@ export async function collateral(
     action: actionType,
     marketAddress: string[] | string
 ) {
-    const comptrollerContract = Comptroller__factory.connect(comptrollerAddress, provider)
+    const comptrollerContract = Comptroller__factory.connect(comptrollerAddress, provider.getSigner())
 
     if (action === "enter" && typeof marketAddress === 'object') {
         await comptrollerContract.enterMarkets(marketAddress);
