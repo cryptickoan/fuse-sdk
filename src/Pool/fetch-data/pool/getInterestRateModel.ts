@@ -10,12 +10,13 @@ import JumpRateModelV2 from '../../irm/JumpRateModelV2';
 import WhitePaperInterestRateModel from "../../irm/WhitePaperInterestRateModel";
 
 /**
+ * @param provider - An ethers provider.
  * @param marketAddress - The cToken/market address to query.
  * @returns - An initiated IRM class, used to simulate future supply/borrow rates.
  */
 export const getInterestRateModel = async function (
+    provider: Provider,
     marketAddress: string,
-    provider: Provider
   ): Promise<any | undefined> {
 
     const cTokenInterface = new Interface([

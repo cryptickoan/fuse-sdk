@@ -3,12 +3,14 @@ import { Provider } from '@ethersproject/abstract-provider';
 import { OracleHashes } from '../../types';
 
 /**
+ * @param provider - An ethers provider.
  * @param oracleAddress - Oracle address to use.
+ * @param oracleHashes - Map of oracle hashes and their models.
  * @returns - The oracle model.
  */
 export const identifyPriceOracle = async function (
-    oracleAddress: string,
     provider: Provider,
+    oracleAddress: string,
     oracleHashes: OracleHashes,
   ): Promise<string | null> {
     // Get price oracle contract name from runtime bytecode hash

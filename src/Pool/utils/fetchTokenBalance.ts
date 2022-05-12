@@ -7,7 +7,7 @@ import { Provider } from '@ethersproject/abstract-provider';
 import { ERC20__factory } from '../../abis/types';
 
 /**
- * 
+ * @param provider - An ethers provider.
  * @param tokenAddress - Token address to get balance from. (ERC20)
  * @param address - User's address to use. If not present the provider's user address will be used.
  * @param parse - This is a boolean. If true, the function will return an integer, otherwise a BigNumber will be returned.

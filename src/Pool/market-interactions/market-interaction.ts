@@ -10,7 +10,6 @@ import { testForCTokenErrorAndSend } from "./utils/testForCTokenErrorAndSend";
 import { getDecimals } from "../utils/getDecimals";
     // Types
 import { marketInteractionType } from "../types";
-    // Interfaces
 import { CErc20__factory } from "../../abis/types";
 
 /**
@@ -32,7 +31,7 @@ export async function marketInteraction(
     account?: string
 ) {
     // 1. Initiate market/ctoken contract.
-    const cTokenContract = CErc20__factory.connect(cTokenAddress, provider.getSigner())
+    const cTokenContract = CErc20__factory.connect(cTokenAddress, provider.getSigner(account))
 
     const isEth = underlyingAddress === "0x0000000000000000000000000000000000000000"
 

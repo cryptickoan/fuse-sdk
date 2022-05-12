@@ -50,7 +50,7 @@ export const Pool = async function(
 
     let data: FusePoolData
     try {
-        data = await fetchFusePoolData(addresses.FUSE_POOL_DIRECTORY_CONTRACT_ADDRESS, provider, poolId, oracleHashes)
+        data = await fetchFusePoolData(provider, addresses.FUSE_POOL_DIRECTORY_CONTRACT_ADDRESS,  poolId, oracleHashes)
     } catch (e) {
         throw e
     }

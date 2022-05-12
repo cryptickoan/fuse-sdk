@@ -6,9 +6,10 @@ import { Comptroller__factory } from "../../abis/types";
 import { actionType } from "../types";
 
 /**
+ * @param provider - An athers provider
  * @param comptrollerAddress - Address of the comptroller where the market is listed.
- * @param marketAddress - Address of market to interact with.
  * @param action - Enter or exit.
+ * @param marketAddress - Address of market to interact with.
  */
 export async function collateral(
     provider: Web3Provider | JsonRpcProvider,

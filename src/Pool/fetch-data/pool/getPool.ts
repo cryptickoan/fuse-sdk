@@ -10,11 +10,14 @@ import { Provider } from "@ethersproject/abstract-provider"
 import { FuseDirectory__factory } from "../../../abis/types"
 
 /**
+ * @param provider - An ethers provider.
+ * @param fuseDirectoryAddress - Fuse directory contract address.
+ * @param poolId - The pool's ID. i.e 8, 156, etc.
  * @returns - Pool general info. Name, creator, comptroller address and time of creation.
  */
  export async function getPool(
-     fuseDirectoryAddress: string,
      provider: Provider,
+     fuseDirectoryAddress: string,
      poolId: number
  ): Promise<PoolInformation> {
 

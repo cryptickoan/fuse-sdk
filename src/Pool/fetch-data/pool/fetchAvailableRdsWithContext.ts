@@ -7,12 +7,13 @@ import { RewardsDistributorData } from "../../types"
 import { Comptroller__factory, Flywheel__factory } from "../../../abis/types"
 
 /**
+ * @param provider - An ethers provider.
  * @param comptrollerAddress - Address of comptroller to query.
  * @returns - An array of addresses of available reward distributors in given comptroller.
  */
 export async function fetchAvailableRdsWithContext(
+    provider: Provider,
     comptrollerAddress: string,
-    provider: Provider
   ): Promise<RewardsDistributorData[]> {
     const comptrollerContract = Comptroller__factory.connect(comptrollerAddress, provider)
 
