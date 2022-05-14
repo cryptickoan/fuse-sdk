@@ -9,7 +9,7 @@ import { Options } from '../../types';
 import { MarketsWithData } from '../../types';
     // Utils
 import { filterOnlyObjectProperties } from "../utils/filterOnlyObjectProperties";
-import { getEthUsdPriceBN } from '../../utils';
+import { getEthUsdPriceBN } from '../../../utils';
 
 /**
  * @param comptrollerAddress - Comptroller to look for.

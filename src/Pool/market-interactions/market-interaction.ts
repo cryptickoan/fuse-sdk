@@ -7,7 +7,7 @@ import { Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
 // Internal
     // Utils
 import { testForCTokenErrorAndSend } from "./utils/testForCTokenErrorAndSend";
-import { getDecimals } from "../utils/getDecimals";
+import { getDecimals } from "../../utils/getDecimals";
     // Types
 import { marketInteractionType } from "../types";
     // Interfaces

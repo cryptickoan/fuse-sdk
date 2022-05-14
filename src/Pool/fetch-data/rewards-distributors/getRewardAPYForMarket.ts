@@ -2,12 +2,16 @@
 // Internal Utils
 import { constructMantissa } from "./utils/constructMantissa"
 import { convertMantissaToAPY, convertMantissaToAPR } from "./utils/convertMantissa"
+
+// Ethers
 import { Provider } from '@ethersproject/abstract-provider'
+
+// SDK 
 import { fetchRewardSpeedInMarket } from "./fetchRewardSpeedsInMarket"
 import { fetchRewardTokenInRd } from "./fetchRewardTokenInRd"
-import { getDecimals } from "../../utils"
 import { getMarketsWithData, getPriceFromOracle } from "../markets"
-import { formatUnits, parseUnits } from "ethers/lib/utils"
+import { formatUnits } from "ethers/lib/utils"
+import { getDecimals } from "../../../utils"
 
 /**
  * 

@@ -1,7 +1,7 @@
 // Ethers
 import { BigNumber } from "@ethersproject/bignumber"
 import { Provider } from '@ethersproject/abstract-provider'
-import { ERC20__factory } from "../../abis/types"
+import { ERC20__factory } from "../abis/types"
 
 /**
  * @param provider - An initiated ethers provider.
