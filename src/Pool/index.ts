@@ -56,8 +56,8 @@ export const Pool = async function(
         poolId,
         ...data,
         fetch: {
-            getMarketsWithData: getMarketsWithData.bind({contracts: {fuseLensContract}}, data.comptroller),
-            fetchAvailableRdsWithContext: fetchAvailableRdsWithContext.bind(null, data.comptroller, provider)
+            marketsWithData: getMarketsWithData.bind({contracts: {fuseLensContract}}, data.comptroller),
+            availableRdsWithContext: fetchAvailableRdsWithContext.bind(null, data.comptroller, provider)
         },
         interact:{
             supply: marketInteraction.bind(null, provider, 'supply'),
