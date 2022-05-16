@@ -12,6 +12,7 @@ import { getDecimals } from "../../utils/getDecimals";
 import { marketInteractionType } from "../types";
     // Interfaces
 import { CErc20__factory } from "../../abis/types";
+import { CEther__factory } from "../../abis/types/factories/CEther__factory";
 
 /**
  * @param provider - An initiated ethers provider.
@@ -32,10 +33,10 @@ export async function marketInteraction(
     account?: string
 ) {
     // 1. Initiate market/ctoken contract.
-    const cTokenContract = CErc20__factory.connect(cTokenAddress, provider.getSigner())
-
     const isEth = underlyingAddress === "0x0000000000000000000000000000000000000000"
-
+    
+    const cTokenContract = isEth ? CEther__factory.connect(cTokenAddress, provider.getSigner()) : CErc20__factory.connect(cTokenAddress, provider.getSigner())
+    
     // 2. Parse given amount to the underlying asset's notation.
         // Fetch decimals if not given.
         if(!decimals && !isEth){
