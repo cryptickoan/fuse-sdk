@@ -1,9 +1,7 @@
 // Ethers
-import { Contract } from "@ethersproject/contracts"
 import { Provider } from '@ethersproject/abstract-provider'
 
 // Types
-import { RewardsDistributorData } from "../../types"
 import { Comptroller__factory, Flywheel__factory } from "../../../abis/types"
 
 /**
@@ -13,37 +11,48 @@ import { Comptroller__factory, Flywheel__factory } from "../../../abis/types"
 export async function fetchAvailableRdsWithContext(
     comptrollerAddress: string,
     provider: Provider
-  ): Promise<RewardsDistributorData[]> {
+  ): Promise<any> {
     const comptrollerContract = Comptroller__factory.connect(comptrollerAddress, provider)
 
     const availableRds = await comptrollerContract.callStatic.getRewardsDistributors()
 
-    const rewardsDistributorWithContext: RewardsDistributorData[] = await Promise.all(availableRds
-    .map(async (rdAddress: string) => {
-      const rdContract = Flywheel__factory.connect(rdAddress, provider)
+    let flywheels: string[] = []
+    let rewardsDistributors: string[] = []
 
-      let isFlywheel = false;
-      let isRewardsDistributor = false;
-      // Check for Flywheel or isRewardsDistributor
-      try { 
-        isFlywheel = await rdContract.callStatic.isFlywheel();
+    for (const rewardsDistributor of availableRds) {
+      const rdContract = Flywheel__factory.connect(rewardsDistributor, provider)
+
+      try {
+        const isFlywheel = await rdContract.callStatic.isFlywheel();
+        if (isFlywheel) flywheels.push(rewardsDistributor) 
+        continue
+        
       } catch {
-          // If not flywheel, check for RD
-          try {
-            isRewardsDistributor = await rdContract.callStatic.isRewardsDistributor();
-          } catch {
-            return
-          }
-      }
+        // If not flywheel, check for RD
+        try {
+          const isRD = await rdContract.callStatic.isRewardsDistributor();
+          if (isRD) rewardsDistributors.push(rewardsDistributor)
+          continue
 
-  
-      const data: RewardsDistributorData = {
-        address: rdAddress,
-        isRewardsDistributor,
-        isFlywheel
+        } catch (e) {
+          console.log(e)
+          continue
+
+        }
       }
-      return data
-    }))
+    }
+
+
+    
+    let rewardsDistributorWithContext: any = {}
+
+    if (flywheels.length > 0) {
+      rewardsDistributorWithContext.flywheels = flywheels
+    }
+
+    if (rewardsDistributors.length > 0) {
+      rewardsDistributorWithContext.rewardsDistributors = rewardsDistributors
+    }
     
 
     return rewardsDistributorWithContext
