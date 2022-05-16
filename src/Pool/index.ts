@@ -15,6 +15,7 @@ import { collateral, marketInteraction } from "./market-interactions";
 import { FuseLens, FuseLensSecondary__factory, FuseLens__factory } from "../abis/types";
 import { getAddresses } from "./utils/getAddresses";
 import { getOracleHashes } from "./utils/getOracleHashes";
+import { getPendingRewards } from "./fetch-data/pool/getPendingRewards";
 
 
 
@@ -57,7 +58,8 @@ export const Pool = async function(
         ...data,
         fetch: {
             marketsWithData: getMarketsWithData.bind({contracts: {fuseLensContract}}, data.comptroller),
-            availableRdsWithContext: fetchAvailableRdsWithContext.bind(null, data.comptroller, provider)
+            availableRdsWithContext: fetchAvailableRdsWithContext.bind(null, data.comptroller, provider),
+            pendingRewards: getPendingRewards.bind(null, provider)
         },
         interact:{
             supply: marketInteraction.bind(null, provider, 'supply'),

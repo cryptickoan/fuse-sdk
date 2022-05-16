@@ -41,8 +41,6 @@ export async function fetchAvailableRdsWithContext(
         }
       }
     }
-
-
     
     let rewardsDistributorWithContext: any = {}
 
