@@ -1,6 +1,5 @@
 // Ethers
 import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
-import { Contract } from "@ethersproject/contracts";
 
 // Internal
     // Types
@@ -11,20 +10,12 @@ import {
     fetchFusePoolData,
     getMarketsWithData, 
 } from "./fetch-data";
-import {
-    fetchTokenBalance, 
-    getDecimals, 
-    getEthUsdPriceBN, 
-    getUnderlyingBalancesForPool,
-    getOracleHashes,
-    getAddresses
-} from './utils'
-    // ABIS
-import FuseLensABI from '../abis/FuseLens.json'
-import { FuseLens, FuseLensSecondary__factory, FuseLens__factory } from "../abis/types";
-import { checkAllowance } from "./utils/checkAllowance";
-import { approve } from "./utils/approve";
 import { collateral, marketInteraction } from "./market-interactions";
+    // ABIS
+import { FuseLens, FuseLensSecondary__factory, FuseLens__factory } from "../abis/types";
+import { getAddresses } from "./utils/getAddresses";
+import { getOracleHashes } from "./utils/getOracleHashes";
+
 
 
 /**
@@ -70,14 +61,6 @@ export const Pool = async function(
             repay: marketInteraction.bind(null, provider, 'repay'),
             enterMarkets: collateral.bind(null, provider, data.comptroller, 'enter'),
             exitMarkets: collateral.bind(null, provider, data.comptroller, 'exit')
-        },
-        utils: {
-            fetchTokenBalance: fetchTokenBalance.bind(null, provider),
-            getDecimals: getDecimals.bind(null, provider),
-            getEthUsdPriceBN,
-            getUnderlyingBalancesForPool,
-            checkAllowance: checkAllowance.bind(null, provider),
-            approve: approve.bind(null, provider)
         }
     };
 
