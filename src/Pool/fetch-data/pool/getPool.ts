@@ -13,11 +13,10 @@ import { FuseDirectory__factory } from "../../../abis/types"
  * @returns - Pool general info. Name, creator, comptroller address and time of creation.
  */
  export async function getPool(
-     fuseDirectoryAddress: string,
      provider: Provider,
+     fuseDirectoryAddress: string,
      poolId: number
  ): Promise<PoolInformation> {
-
     const fusePoolDirectoryContract = FuseDirectory__factory.connect(fuseDirectoryAddress, provider)
 
     const poolInformation = await fusePoolDirectoryContract.callStatic.pools(poolId)

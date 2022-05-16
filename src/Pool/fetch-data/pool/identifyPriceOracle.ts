@@ -7,8 +7,8 @@ import { OracleHashes } from '../../types';
  * @returns - The oracle model.
  */
 export const identifyPriceOracle = async function (
-    oracleAddress: string,
     provider: Provider,
+    oracleAddress: string,
     oracleHashes: OracleHashes,
   ): Promise<string | null> {
     // Get price oracle contract name from runtime bytecode hash

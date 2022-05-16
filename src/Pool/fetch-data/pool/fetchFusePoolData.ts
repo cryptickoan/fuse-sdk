@@ -21,8 +21,8 @@ import { Comptroller__factory } from "../../../abis/types";
  * @returns - General pool data of the given pool. i.e Pool name, admin's address, oracle address, oracle model and comptroller's address. 
  */
 export async function fetchFusePoolData (
-    fuseDirectoryAddress: string,
     provider: Provider, 
+    fuseDirectoryAddress: string,
     poolId: number,
     oracleHashes: OracleHashes
 ): Promise<FusePoolData | undefined> {
@@ -31,8 +31,8 @@ export async function fetchFusePoolData (
         comptroller,
         name: _unfiliteredName,
     } = await getPool(
-        fuseDirectoryAddress,
         provider, 
+        fuseDirectoryAddress,
         poolId
     )
 
@@ -45,7 +45,7 @@ export async function fetchFusePoolData (
 
     // 3. Get Oracle and oracle model.
     let oracle: string = await comptrollerContract.callStatic.oracle();
-    let oracleModel: string | null = await identifyPriceOracle(oracle, provider, oracleHashes);
+    let oracleModel: string | null = await identifyPriceOracle(provider, oracle, oracleHashes);
     
     // 4. Get pool's admin address.
     const admin = await comptrollerContract.callStatic.admin();
