@@ -10,12 +10,13 @@ import {
     fetchFusePoolData,
     getMarketsWithData, 
 } from "./fetch-data";
-import { collateral, marketInteraction } from "./market-interactions";
+import { collateral, marketInteraction } from "./interact/market-interactions";
     // ABIS
 import { FuseLens, FuseLensSecondary__factory, FuseLens__factory } from "../abis/types";
 import { getAddresses } from "./utils/getAddresses";
 import { getOracleHashes } from "./utils/getOracleHashes";
 import { getPendingRewards } from "./fetch-data/pool/getPendingRewards";
+import { accrue, claimAndAccrue } from "./interact/flywheel";
 
 
 
@@ -62,12 +63,18 @@ export const Pool = async function(
             pendingRewards: getPendingRewards.bind(null, provider)
         },
         interact:{
-            supply: marketInteraction.bind(null, provider, 'supply'),
-            withdraw: marketInteraction.bind(null, provider, 'withdraw'),
-            borrow: marketInteraction.bind(null, provider, 'borrow'),
-            repay: marketInteraction.bind(null, provider, 'repay'),
-            enterMarkets: collateral.bind(null, provider, data.comptroller, 'enter'),
-            exitMarkets: collateral.bind(null, provider, data.comptroller, 'exit')
+            market: { 
+                supply: marketInteraction.bind(null, provider, 'supply'),
+                withdraw: marketInteraction.bind(null, provider, 'withdraw'),
+                borrow: marketInteraction.bind(null, provider, 'borrow'),
+                repay: marketInteraction.bind(null, provider, 'repay'),
+                enterMarkets: collateral.bind(null, provider, data.comptroller, 'enter'),
+                exitMarkets: collateral.bind(null, provider, data.comptroller, 'exit')
+            },
+            flywheel: {
+                accrue: accrue.bind(null, provider),
+                claimAndAccrue: claimAndAccrue.bind(null, provider)
+            }
         }
     };
 
