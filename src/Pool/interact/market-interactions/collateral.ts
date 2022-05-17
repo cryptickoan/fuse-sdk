@@ -1,9 +1,9 @@
 // Ethers
 import { Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
-import { Comptroller__factory } from "../../abis/types";
+import { Comptroller__factory } from "../../../abis/types";
 
 // SDK
-import { actionType } from "../types";
+import { actionType } from "../../types";
 
 /**
  * @param comptrollerAddress - Address of the comptroller where the market is listed.

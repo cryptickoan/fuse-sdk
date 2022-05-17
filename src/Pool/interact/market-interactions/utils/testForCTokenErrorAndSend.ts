@@ -1,4 +1,4 @@
-import { ComptrollerErrorCodes, CTokenErrorCodes } from "../../types";
+import { ComptrollerErrorCodes, CTokenErrorCodes } from "../../../types";
 
 export async function testForCTokenErrorAndSend(
     txObjectStaticCall: any, // for static calls

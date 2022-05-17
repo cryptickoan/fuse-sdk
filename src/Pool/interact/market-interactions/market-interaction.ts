@@ -7,12 +7,12 @@ import { Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
 // Internal
     // Utils
 import { testForCTokenErrorAndSend } from "./utils/testForCTokenErrorAndSend";
-import { getDecimals } from "../../utils/getDecimals";
+import { getDecimals } from "../../../utils/getDecimals";
     // Types
-import { marketInteractionType } from "../types";
+import { marketInteractionType } from "../../types";
     // Interfaces
-import { CErc20__factory } from "../../abis/types";
-import { CEther__factory } from "../../abis/types/factories/CEther__factory";
+import { CErc20__factory } from "../../../abis/types";
+import { CEther__factory } from "../../../abis/types/factories/CEther__factory";
 
 /**
  * @param provider - An initiated ethers provider.
