@@ -10,9 +10,9 @@
         "name": "price",
         "outputs": [
             {
-                "internalType": "uint256",
+                "internalType": "uint",
                 "name": "",
-                "type": "uint256"
+                "type": "uint"
             }
         ],
         "stateMutability": "view",
