@@ -10,6 +10,8 @@ import { MarketsWithData } from '../../types';
     // Utils
 import { filterOnlyObjectProperties } from "../utils/filterOnlyObjectProperties";
 import { getEthUsdPriceBN } from '../../../utils';
+import { convertMantissaToAPY } from '../utils/mantissaToAPY';
+import { formatEther } from 'ethers/lib/utils';
 
 /**
  * @param comptrollerAddress - Comptroller to look for.
@@ -20,7 +22,7 @@ export async function getMarketsWithData(
     comptrollerAddress: string,
     options?: Options
 ): Promise<MarketsWithData> {
-    let assets: USDPricedFuseAsset[] = (
+    let assets: any[] = (
         await this.contracts.fuseLensContract.callStatic.getPoolAssetsWithData(
             comptrollerAddress,  options ?? {})
     ).map(filterOnlyObjectProperties)
@@ -60,6 +62,10 @@ export async function getMarketsWithData(
         .mul(asset.underlyingPrice)
         .mul(ethPrice)
         .div(WeiPerEther.pow(3));
+
+        asset.supplyAPY = convertMantissaToAPY(asset.supplyRatePerBlock);
+        asset.borrowAPY = convertMantissaToAPY(asset.borrowRatePerBlock);
+        asset.collateralFactorNumber = formatEther(asset.collateralFactor.mul(100))
     
         totalSuppliedUSD = totalSuppliedUSD.add(asset.totalSupplyUSD);
         totalBorrowedUSD = totalBorrowedUSD.add(asset.totalBorrowUSD);
