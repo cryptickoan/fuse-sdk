@@ -1,4 +1,4 @@
-export { fetchAvailableRdsWithContext } from "./fetchAvailableRdsWithContext";
+export { fetchRewardedMarketsWithContext } from "./fetchRewardedMarketsWithContext";
 export { fetchFusePoolData } from './fetchFusePoolData';
 export { getPool } from './getPool';
 export { identifyPriceOracle } from './identifyPriceOracle';
