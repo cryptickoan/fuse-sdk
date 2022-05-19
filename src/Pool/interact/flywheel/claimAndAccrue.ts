@@ -1,20 +1,20 @@
 import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers"
 import { FuseFlywheelLensRouter__factory } from "../../../abis/types/factories/FuseFlywheelLensRouter__factory"
 
-export const claimAndAccrue = (
+export const claimAndAccrue = async (
     provider: Web3Provider | JsonRpcProvider,
-    market: string | string[],
-    flywheels: string[],
-    accrue: boolean[],
+    flywheelWithContext: any,
+    flywheel: string,
     userAddress: string
 ) => {
     const flywheelRouter = FuseFlywheelLensRouter__factory.connect("0xcd9704f874d69f0cb2ddfd04ff8e5c88f3caf02e", provider.getSigner())
+    
+    const markets = Object.keys(flywheelWithContext.shouldAccrue)
 
-    if (typeof market === 'string') {
-
-        return flywheelRouter.getUnclaimedRewardsForMarket(userAddress, market, flywheels, accrue)
+    let accrue = []
+    for (const market of markets) {
+        accrue.push(flywheelWithContext.shouldAccrue[market].shouldUpdate)
     }
 
-    return flywheelRouter.getUnclaimedRewardsByMarkets(userAddress, market, flywheels, accrue)
-
+    return await flywheelRouter.getUnclaimedRewardsByMarkets(userAddress, markets, [flywheel], accrue)
 }
