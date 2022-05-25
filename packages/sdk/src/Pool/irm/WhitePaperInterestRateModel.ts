@@ -1,4 +1,3 @@
-import { Web3Provider } from "@ethersproject/providers";
 import { BigNumber } from "@ethersproject/bignumber";
 import { Contract } from "@ethersproject/contracts";
 import { WeiPerEther } from '@ethersproject/constants';

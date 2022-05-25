@@ -1,22 +1,22 @@
 // Ethers
-import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
+import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers"
 
 // Internal
     // Types
-import { FusePoolData, PoolInstance } from "./types";
+import { FusePoolData, PoolInstance } from './types'
     // Functions
 import { 
     fetchRewardedMarketsWithContext, 
     fetchFusePoolData,
     getMarketsWithData, 
-} from "./fetch-data";
-import { collateral, marketInteraction } from "./interact/market-interactions";
+} from "./fetch-data"
+import { collateral, marketInteraction } from './interact/market-interactions'
     // ABIS
-import { FuseLens, FuseLensSecondary__factory, FuseLens__factory } from "../abis/types";
-import { getAddresses } from "./utils/getAddresses";
-import { getOracleHashes } from "./utils/getOracleHashes";
-import { getPendingFlywheelRewards } from "./fetch-data/pool/getPendingFlywheelRewards";
-import { accrue, claimAndAccrue } from "./interact/flywheel";
+import { FuseLens, FuseLensSecondary__factory, FuseLens__factory } from "../abis/types"
+import { getAddresses } from "./utils/getAddresses"
+import { getOracleHashes } from "./utils/getOracleHashes"
+import { getPendingFlywheelRewards } from "./fetch-data/pool/getPendingFlywheelRewards"
+import { accrue, claimAndAccrue } from "./interact/flywheel"
 
 
 

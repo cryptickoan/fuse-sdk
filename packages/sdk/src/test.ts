@@ -1,5 +1,5 @@
 import { JsonRpcProvider } from "@ethersproject/providers";
-import { Pool } from "./pool";
+import { Pool } from "./Pool";
 
 const provider = new JsonRpcProvider('http://127.0.0.1:8545/')
 

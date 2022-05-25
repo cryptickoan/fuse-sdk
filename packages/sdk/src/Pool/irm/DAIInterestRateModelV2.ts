@@ -1,7 +1,8 @@
-import JumpRateModel from "./JumpRateModel";
 import { BigNumber } from "@ethersproject/bignumber";
 import { Contract } from "@ethersproject/contracts";
 import { Interface } from "@ethersproject/abi";
+//@ts-ignore
+import JumpRateModel from "./JumpRateModel";
 
 export default class DAIInterestRateModelV2 extends JumpRateModel {
   static RUNTIME_BYTECODE_HASH =

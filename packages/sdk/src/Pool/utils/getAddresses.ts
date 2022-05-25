@@ -1,4 +1,4 @@
-import { Addresses } from "../types"
+import { Addresses } from '../types'
 
 export function getAddresses(
     id: number

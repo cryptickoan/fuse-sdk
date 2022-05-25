@@ -161,9 +161,11 @@
           "type": "tuple",
           "components": [
             {
+              "name": "rewardsPerSecond",
               "type": "uint224"
             },
             {
+              "name": "rewardsEndTimestamp",
               "type": "uint32"
             }
           ]

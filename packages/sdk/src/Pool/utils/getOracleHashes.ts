@@ -1,4 +1,4 @@
-import { OracleHashes } from "../types"
+import { OracleHashes } from '../types'
 
 export function getOracleHashes(
     id: number

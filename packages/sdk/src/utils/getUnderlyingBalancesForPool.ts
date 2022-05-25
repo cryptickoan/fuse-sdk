@@ -1,5 +1,5 @@
 import { BigNumber } from "@ethersproject/bignumber"
-import { USDPricedFuseAsset } from "../pool/types"
+import { USDPricedFuseAsset } from "../Pool/types"
 
 /**
  * @param markets - An array of markets with their FuseLens information. Should come from calling pool.getMarketsWithData(comptroller)
