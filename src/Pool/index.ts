@@ -6,7 +6,7 @@ import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import { FusePoolData, PoolInstance } from "./types";
     // Functions
 import { 
-    fetchAvailableRdsWithContext, 
+    fetchRewardedMarketsWithContext, 
     fetchFusePoolData,
     getMarketsWithData, 
 } from "./fetch-data";
@@ -15,7 +15,7 @@ import { collateral, marketInteraction } from "./interact/market-interactions";
 import { FuseLens, FuseLensSecondary__factory, FuseLens__factory } from "../abis/types";
 import { getAddresses } from "./utils/getAddresses";
 import { getOracleHashes } from "./utils/getOracleHashes";
-import { getPendingRewards } from "./fetch-data/pool/getPendingRewards";
+import { getPendingFlywheelRewards } from "./fetch-data/pool/getPendingFlywheelRewards";
 import { accrue, claimAndAccrue } from "./interact/flywheel";
 
 
@@ -34,17 +34,19 @@ export const Pool = async function(
     if(!provider  || !chainId || !poolId) {
         return undefined
     }
+
+    const readOnlyProvider = new JsonRpcProvider('http://127.0.0.1:8545')
     
     const addresses = getAddresses(chainId)
     const oracleHashes = getOracleHashes(chainId)
 
-    const fuseLensContract: FuseLens = FuseLens__factory.connect(addresses.FUSE_POOL_LENS_CONTRACT_ADDRESS, provider)
-    const secondaryFuseLensContract = FuseLensSecondary__factory.connect(addresses.FUSE_POOL_LENS_SECONDARY_CONTRACT_ADDRESS, provider)
+    const fuseLensContract: FuseLens = FuseLens__factory.connect(addresses.FUSE_POOL_LENS_CONTRACT_ADDRESS, readOnlyProvider)
+    const secondaryFuseLensContract = FuseLensSecondary__factory.connect(addresses.FUSE_POOL_LENS_SECONDARY_CONTRACT_ADDRESS, readOnlyProvider)
 
     let data: FusePoolData
     try {
         data = await fetchFusePoolData(
-            provider, 
+            readOnlyProvider, 
             addresses.FUSE_POOL_DIRECTORY_CONTRACT_ADDRESS, 
             poolId, 
             oracleHashes
@@ -58,9 +60,9 @@ export const Pool = async function(
         poolId,
         ...data,
         fetch: {
-            marketsWithData: getMarketsWithData.bind({contracts: {fuseLensContract}}, data.comptroller),
-            availableRdsWithContext: fetchAvailableRdsWithContext.bind(null, data.comptroller, provider),
-            pendingRewards: getPendingRewards.bind(null, provider)
+            markets: getMarketsWithData.bind({contracts: {fuseLensContract}}, data.comptroller),
+            rewardedMarkets: fetchRewardedMarketsWithContext.bind(null, data.comptroller, data.oracle, readOnlyProvider),
+            pendingRewards: getPendingFlywheelRewards.bind(null, readOnlyProvider, data.comptroller)
         },
         interact:{
             market: { 

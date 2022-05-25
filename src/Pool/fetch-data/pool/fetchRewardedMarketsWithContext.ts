@@ -1,10 +1,9 @@
 // Ethers
 import { Provider } from '@ethersproject/abstract-provider'
-import { WeiPerEther } from '@ethersproject/constants'
-import { formatEther, parseEther } from 'ethers/lib/utils'
+import { formatEther } from 'ethers/lib/utils'
 
 // Types
-import { Comptroller__factory, FlywheelStaticRewards__factory, Flywheel__factory, FuseFlywheelCore__factory, MPO__factory } from "../../../abis/types"
+import { Comptroller__factory, FlywheelStaticRewards__factory, FuseFlywheelCore__factory, MPO__factory } from "../../../abis/types"
 import { getEthUsdPriceBN } from '../../../utils'
 
 /**
@@ -21,7 +20,7 @@ export async function fetchRewardedMarketsWithContext(
     const availableRds = await comptrollerContract.callStatic.getRewardsDistributors()
 
 
-    let rewardedMarkets: any = {}
+    let rewardedMarkets: any = {supply: {}, borrow:{}}
 
     for (const rewardsDistributor of availableRds) {
       const flywheelContract = FuseFlywheelCore__factory.connect(rewardsDistributor, provider)
@@ -30,29 +29,51 @@ export async function fetchRewardedMarketsWithContext(
         const isFlywheel = await flywheelContract.callStatic.isFlywheel();
         if (isFlywheel) {
           const rewardedStrategies = await flywheelContract.callStatic.getAllStrategies()
-          const rewardsModule = await flywheelContract.callStatic.flywheelRewards()
-          const incentivizingSupply = await flywheelContract.callStatic.rewardingSupply()
-          const rewardedToken = await flywheelContract.callStatic.rewardToken()
-
-          const oracleContract = await MPO__factory.connect(oracleAddress, provider)
-          const rewardedTokenPrice = await oracleContract.callStatic.price(rewardedToken)
-          const ethPrice = await getEthUsdPriceBN()
-          const rewardedTokenPriceUSD = (parseFloat(formatEther(rewardedTokenPrice)) * parseFloat(formatEther(ethPrice)))
-
-          const rewardsModuleContract = FlywheelStaticRewards__factory.connect(rewardsModule, provider)
+          
+          // If flywheel is rewarding any strategies
           if (rewardedStrategies.length > 0) {
-            for (const market of rewardedStrategies) {
-              const rewardsInfo = await rewardsModuleContract.callStatic.rewardsInfo(market)
-              rewardedMarkets[market] = {
-                isFlywheel,
-                rewardsDistributor,
-                rewardsPerSecond: rewardsInfo.rewardsPerSecond,
-                rewardsPerSecondInUSD: parseFloat(formatEther(rewardsInfo.rewardsPerSecond)) * rewardedTokenPriceUSD,
-                incentivizingSupply,
-                rewardedToken,
-                rewardedTokenPrice,
-                rewardedTokenPriceUSD,
+            // Get Flywheel general info
+
+            // 1. This will be true if flywheel is incentivizing supply
+            const incentivizingSupply = await flywheelContract.callStatic.rewardingSupply()
+
+            // 2. Rewarded token info to get APY
+            const rewardedToken = await flywheelContract.callStatic.rewardToken()
+            const oracleContract = await MPO__factory.connect(oracleAddress, provider)
+            const rewardedTokenPrice = await oracleContract.callStatic.price(rewardedToken)
+            const ethPrice = await getEthUsdPriceBN()
+            const rewardedTokenPriceUSD = (parseFloat(formatEther(rewardedTokenPrice)) * parseFloat(formatEther(ethPrice)))
+
+            // 3. Prepare rewards module contract
+            const rewardsModule = await flywheelContract.callStatic.flywheelRewards()
+            const rewardsModuleContract = FlywheelStaticRewards__factory.connect(rewardsModule, provider)
+          
+            // For every rewarded strategy get its reward info
+            for (const strategy of rewardedStrategies) {
+              const rewardsInfo = await rewardsModuleContract.callStatic.rewardsInfo(strategy)
+
+              if (incentivizingSupply) {
+                rewardedMarkets.supply[strategy] = rewardedMarkets.supply[strategy] ?? {}
+                rewardedMarkets.supply[strategy][rewardsDistributor] = {
+                  isFlywheel,
+                  incentivizingSupply,
+                  rewardsDistributorAddress: rewardsDistributor,
+                  rewardsPerSecondInUSD: parseFloat(formatEther(rewardsInfo.rewardsPerSecond)) * rewardedTokenPriceUSD,
+                  rewardedToken,
+                }
               }
+
+              if (!incentivizingSupply) {
+                rewardedMarkets.borrow[strategy] = rewardedMarkets.borrow[strategy]  ?? {}
+                rewardedMarkets.borrow[strategy][rewardsDistributor] = {
+                  isFlywheel,
+                  incentivizingSupply,
+                  rewardsDistributorAddress: rewardsDistributor,
+                  rewardsPerSecondInUSD: parseFloat(formatEther(rewardsInfo.rewardsPerSecond)) * rewardedTokenPriceUSD,
+                  rewardedToken,
+                }
+              }
+              
             }
           }
         }
