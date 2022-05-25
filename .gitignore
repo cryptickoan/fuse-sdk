@@ -10,3 +10,10 @@
 
 # Typechain
 /packages/sdk/src/abis/types
+
+###################
+# Example Package #
+###################
+
+/packages/example/.next
+/packages/example/node_modules
