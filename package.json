@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/cryptickoan/fuse-sdk#readme",
   "workspaces": [
-    "packages/sdk"
+    "packages/sdk",
+    "packages/example"
   ]
 }
