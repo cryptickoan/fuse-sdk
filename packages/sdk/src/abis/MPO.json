@@ -1,0 +1,21 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "underlying",
+                "type": "address"
+            }
+        ],
+        "name": "price",
+        "outputs": [
+            {
+                "internalType": "uint",
+                "name": "",
+                "type": "uint"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]
