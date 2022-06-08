@@ -12,7 +12,7 @@ import {
 } from "./fetch-data"
 import { collateral, marketInteraction } from './interact/market-interactions'
     // ABIS
-import { FuseLens, FuseLensSecondary__factory, FuseLens__factory } from "../abis/types"
+import { FusePoolLens, FusePoolLensSecondary__factory, FusePoolLens__factory } from "../abis/types"
 import { getAddresses } from "./utils/getAddresses"
 import { getOracleHashes } from "./utils/getOracleHashes"
 import { getPendingFlywheelRewards } from "./fetch-data/pool/getPendingFlywheelRewards"
@@ -40,8 +40,8 @@ export const Pool = async function(
     const addresses = getAddresses(chainId)
     const oracleHashes = getOracleHashes(chainId)
 
-    const fuseLensContract: FuseLens = FuseLens__factory.connect(addresses.FUSE_POOL_LENS_CONTRACT_ADDRESS, readOnlyProvider)
-    const secondaryFuseLensContract = FuseLensSecondary__factory.connect(addresses.FUSE_POOL_LENS_SECONDARY_CONTRACT_ADDRESS, readOnlyProvider)
+    const fuseLensContract: FusePoolLens = FusePoolLens__factory.connect(addresses.FUSE_POOL_LENS_CONTRACT_ADDRESS, readOnlyProvider)
+    const secondaryFuseLensContract = FusePoolLensSecondary__factory.connect(addresses.FUSE_POOL_LENS_SECONDARY_CONTRACT_ADDRESS, readOnlyProvider)
 
     let data: FusePoolData
     try {
