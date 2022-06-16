@@ -3,7 +3,6 @@ import { MaxUint256 } from '@ethersproject/constants';
 import { BigNumber } from '@ethersproject/bignumber';
 import { parseEther, parseUnits } from '@ethersproject/units';
 import { Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
-import { ERC20__factory } from '../abis/types';
 
 /**
  * This function will approve given value/MaxUint256 to spender.
