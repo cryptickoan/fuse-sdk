@@ -4,7 +4,6 @@ import { BigNumber } from "@ethersproject/bignumber";
 
 // Internal
     // Types
-import { USDPricedFuseAsset } from "../../types";
 import { Options } from '../../types';
 import { MarketsWithData } from '../../types';
     // Utils

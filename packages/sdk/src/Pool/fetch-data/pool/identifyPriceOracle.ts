@@ -15,15 +15,5 @@ export const identifyPriceOracle = async function (
     const runtimeBytecodeHash = keccak256(
       await provider.getCode(oracleAddress)
     );
-    
-    for (const model of Object.keys(
-      oracleHashes
-    )) {
-      if (
-        runtimeBytecodeHash ===
-        oracleHashes[model]
-      )
-        return model;
-    }
-    return null;
-  };
+        return oracleHashes[runtimeBytecodeHash];
+  }

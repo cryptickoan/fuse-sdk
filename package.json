@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "npm run dev --workspace=packages/example",
     "postinstall": "npm run postinstall --workspace=packages/sdk",
+    "typechain": "npm run typechain --workspace=packages/sdk",
     "build:sdk": "npm run build --workspace=packages/sdk",
     "test:sdk": "npm run test --workspace=packages/sdk",
     "anvil": "anvil --fork-url https://eth-mainnet.alchemyapi.io/v2/2Mt-6brbJvTA4w9cpiDtnbTo6qOoySnN --fork-block-number 14610872 -vvvvv"

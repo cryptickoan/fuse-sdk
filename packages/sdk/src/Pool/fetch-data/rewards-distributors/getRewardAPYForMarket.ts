@@ -1,4 +1,3 @@
-
 // Internal Utils
 import { constructMantissa } from "./utils/constructMantissa"
 import { convertMantissaToAPY, convertMantissaToAPR } from "./utils/convertMantissa"
