@@ -46,7 +46,7 @@ export interface USDPricedFuseAsset extends FuseAsset {
     borrowGuardianPaused?: boolean;
 }
 
-export interface USDPricedFuseAssetUSDPricedFuseAssetWithTokenData extends USDPricedFuseAsset {
+export interface USDPricedFuseAssetWithTokenData extends USDPricedFuseAsset {
     tokenData: TokenData;
 }
 
