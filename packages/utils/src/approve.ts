@@ -4,6 +4,9 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { parseEther, parseUnits } from '@ethersproject/units';
 import { Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
 
+// Contracts
+import { ERC20__factory } from '@fuse-v1/flywheel';
+
 /**
  * This function will approve given value/MaxUint256 to spender.
  * @param provider - An initiated ethers provider.
@@ -33,7 +36,7 @@ export async function approve(
     if (value) {
         // Get decimals
         if (!decimals) {
-            decimals = await erc20Contract.callStatic.decimals()
+            decimals = BigNumber.from(await erc20Contract.callStatic.decimals())
         }
 
         // Parse

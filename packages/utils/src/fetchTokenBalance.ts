@@ -2,7 +2,9 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { WeiPerEther } from '@ethersproject/constants';
 import { Provider } from '@ethersproject/abstract-provider';
-import { ERC20__factory } from '../abis/types';
+
+// Contracts
+import { ERC20__factory } from '@fuse-v1/flywheel';
 
 /**
  * 

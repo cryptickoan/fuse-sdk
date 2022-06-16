@@ -4,6 +4,9 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { parseEther, parseUnits } from '@ethersproject/units';
 import { Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
 
+// Contracts
+import { ERC20__factory } from '@fuse-v1/flywheel';
+
 /**
  * This function will check current allowance for the given spender.
  * @param provider - An initiated ethers provider.
@@ -32,7 +35,7 @@ export async function checkAllowance(
 
     // 2. Get decimals if they werent provided.
     if (!decimals) {
-        decimals = await erc20Contract.callStatic.decimals()
+        decimals = BigNumber.from(await erc20Contract.callStatic.decimals())
     }
 
     // 3. Parse value to uint256 contract call.
