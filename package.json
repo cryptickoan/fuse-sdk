@@ -27,6 +27,8 @@
     "packages/pool"
   ],
   "dependencies": {
+    "@fuse-v1/core": "^1.0.2",
+    "@fuse-v1/flywheel": "^1.0.0",
     "@fuse-v1/periphery": "^1.0.2"
   }
 }
