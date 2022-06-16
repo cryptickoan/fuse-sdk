@@ -1,11 +1,13 @@
 {
-  "name": "utils",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "devDependencies": {},
+  "name": "@fuse-v1/utils.sdk",
+  "version": "1.0.3",
+  "exports": {
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.js"
+  },
+  "types": "./dist/types/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npx tsc -p tsconfig-esm.json&& npx tsc -p tsconfig-cjs.json"
   },
   "repository": {
     "type": "git",
@@ -16,5 +18,10 @@
   "bugs": {
     "url": "https://github.com/cryptickoan/fuse-sdk/issues"
   },
-  "homepage": "https://github.com/cryptickoan/fuse-sdk#readme"
+  "homepage": "https://github.com/cryptickoan/fuse-sdk#readme",
+  "devDependencies": {
+    "typescript": "^4.7.3"
+  },
+  "main": "index.js",
+  "description": ""
 }
