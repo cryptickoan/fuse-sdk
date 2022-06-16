@@ -4,7 +4,7 @@ import { filterOnlyObjectProperties } from "../utils/filterOnlyObjectProperties"
 // Types
 import { PoolInformation } from "../../types"
 import { Provider } from "@ethersproject/abstract-provider"
-import { FusePoolDirectory__factory } from "../../../abis/types"
+import { FusePoolDirectory__factory } from "@fuse-v1/periphery"
 
 /**
  * @param provider - Provider to use to make the call.

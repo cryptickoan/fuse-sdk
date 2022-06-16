@@ -1,5 +1,5 @@
 // Ethers
-import { Contract } from "@ethersproject/contracts";
+import { Provider } from "@ethersproject/abstract-provider";
 
 // Internal 
     // Types
@@ -8,9 +8,10 @@ import { FusePoolData, OracleHashes } from "../../types";
 import { filterPoolName } from "../utils/filterPoolName";
     // Interfaces
 import { getPool } from "./getPool";
-import { Provider } from "@ethersproject/abstract-provider";
 import { identifyPriceOracle } from "./identifyPriceOracle";
-import { Comptroller__factory } from "../../../abis/types";
+
+// Contracts
+import { Comptroller__factory } from "@fuse-v1/core";
 
 
 /**

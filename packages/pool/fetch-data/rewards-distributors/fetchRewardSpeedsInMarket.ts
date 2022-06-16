@@ -1,7 +1,9 @@
 // Ethers
 import { BigNumber } from "@ethersproject/bignumber"
 import { Provider } from '@ethersproject/abstract-provider'
-import { RewardsDistributor__factory } from "../../../abis/types"
+
+// Contracts
+import { RewardsDistributorDelegate__factory } from "@fuse-v1/core"
 
 /**
  * @param rdAddress - The rewards distributor address.
@@ -16,7 +18,7 @@ export async function fetchRewardSpeedInMarket(
     type: 'supply' | 'borrow',
     provider: Provider
 ): Promise<BigNumber> {
-    const rdContract = RewardsDistributor__factory.connect(rdAddress, provider)
+    const rdContract = RewardsDistributorDelegate__factory.connect(rdAddress, provider)
 
     return type === 'supply' 
     ? rdContract.callStatic.compSupplySpeeds( marketAddress )

@@ -1,4 +1,8 @@
+// Ethers
 import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers"
+
+// Contracts
+import { FuseFlywheelCore__factory } from "@fuse-v1/flywheel"
 
 export const accrue = async (
     provider: Web3Provider | JsonRpcProvider,

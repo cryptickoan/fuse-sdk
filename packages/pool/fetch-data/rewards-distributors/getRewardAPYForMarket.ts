@@ -10,7 +10,6 @@ import { fetchRewardSpeedInMarket } from "./fetchRewardSpeedsInMarket"
 import { fetchRewardTokenInRd } from "./fetchRewardTokenInRd"
 import { getMarketsWithData, getPriceFromOracle } from "../markets"
 import { formatUnits } from "ethers/lib/utils"
-import { getDecimals } from "../../../utils"
 
 /**
  * 

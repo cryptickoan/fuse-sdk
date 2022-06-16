@@ -1,8 +1,8 @@
 // Ethers
 import { Provider } from '@ethersproject/abstract-provider'
+import { Comptroller__factory } from '@fuse-v1/core'
 
 // Interface
-import { Comptroller__factory } from "../../../abis/types"
 
 /**
  * @param comptrollerAddress - Address of comptroller to query.

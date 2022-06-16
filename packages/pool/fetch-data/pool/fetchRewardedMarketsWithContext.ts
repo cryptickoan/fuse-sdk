@@ -1,9 +1,11 @@
 // Ethers
 import { Provider } from '@ethersproject/abstract-provider'
+import { Comptroller__factory } from '@fuse-v1/core'
+import { FlywheelStaticRewards__factory, FuseFlywheelCore__factory } from '@fuse-v1/flywheel'
+import { MasterPriceOracle__factory } from '@fuse-v1/oracles'
 import { formatEther } from 'ethers/lib/utils'
 
 // Types
-import { Comptroller__factory, FlywheelStaticRewards__factory, FuseFlywheelCore__factory, MPO__factory } from "../../../abis/types"
 import { getEthUsdPriceBN } from '../../../utils'
 
 /**
@@ -39,7 +41,7 @@ export async function fetchRewardedMarketsWithContext(
 
             // 2. Rewarded token info to get APY
             const rewardedToken = await flywheelContract.callStatic.rewardToken()
-            const oracleContract = await MPO__factory.connect(oracleAddress, provider)
+            const oracleContract = MasterPriceOracle__factory.connect(oracleAddress, provider)
             const rewardedTokenPrice = await oracleContract.callStatic.price(rewardedToken)
             const ethPrice = await getEthUsdPriceBN()
             const rewardedTokenPriceUSD = (parseFloat(formatEther(rewardedTokenPrice)) * parseFloat(formatEther(ethPrice)))

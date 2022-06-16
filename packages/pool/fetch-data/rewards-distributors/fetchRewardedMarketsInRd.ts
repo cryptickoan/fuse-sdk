@@ -1,7 +1,8 @@
 // Ethers
-import { Contract } from "@ethersproject/contracts"
 import { Provider } from '@ethersproject/abstract-provider'
-import { RewardsDistributor__factory } from "../../../abis/types"
+
+// Contracts
+import { RewardsDistributorDelegate__factory } from "@fuse-v1/core"
 
 /**
  * @param rdAddress - Address of the reward distributor to query. 
@@ -11,7 +12,7 @@ export async function fetchRewardedMarketsInRd(
     rdAddress : string,
     provider: Provider
 ): Promise<string[]> {
-    const rdContract = RewardsDistributor__factory.connect(rdAddress, provider)
+    const rdContract = RewardsDistributorDelegate__factory.connect(rdAddress, provider)
 
     return await rdContract.callStatic.getAllMarkets()
 }

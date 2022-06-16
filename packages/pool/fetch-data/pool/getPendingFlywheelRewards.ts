@@ -1,7 +1,8 @@
 import { Provider } from "@ethersproject/abstract-provider"
 import { Zero } from "@ethersproject/constants"
+import { CErc20__factory, Comptroller__factory } from "@fuse-v1/core"
+import { FuseFlywheelCore__factory } from "@fuse-v1/flywheel"
 import { BigNumber } from "ethers"
-import { CErc20__factory, Comptroller__factory, FuseFlywheelCore__factory } from "../../../abis/types"
 
 export const getPendingFlywheelRewards = async (
     provider: Provider,

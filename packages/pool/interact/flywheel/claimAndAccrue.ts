@@ -1,5 +1,8 @@
+// Ethers
 import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers"
-import { FuseFlywheelLensRouter__factory } from "../../../abis/types/factories/FuseFlywheelLensRouter__factory"
+
+// Contracts
+import { FuseFlywheelLensRouter__factory } from "@fuse-v1/flywheel"
 
 export const claimAndAccrue = async (
     provider: Web3Provider | JsonRpcProvider,
@@ -11,7 +14,7 @@ export const claimAndAccrue = async (
     
     const markets = Object.keys(flywheelWithContext.shouldAccrue)
 
-    let accrue = []
+    let accrue: any = []
     for (const market of markets) {
         accrue.push(flywheelWithContext.shouldAccrue[market].shouldUpdate)
     }
