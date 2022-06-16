@@ -1,5 +1,7 @@
 // Ethers
 import { Provider } from '@ethersproject/abstract-provider'
+
+// Contracts
 import { Comptroller__factory } from '@fuse-v1/core'
 
 // Interface

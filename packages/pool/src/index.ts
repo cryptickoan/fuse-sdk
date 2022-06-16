@@ -1,9 +1,6 @@
 // Ethers
 import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers"
 
-// Contracts
-import { FusePoolLens, FusePoolLensSecondary__factory, FusePoolLens__factory } from "@fuse-v1/periphery"
-
 // Internal
     // Types
 import { FusePoolData, PoolInstance } from './types'
@@ -36,10 +33,7 @@ export const Pool = async function(
     const addresses = getAddresses(chainId)
     const oracleHashes = getOracleHashes(chainId)
 
-    const fuseLensContract: FusePoolLens = FusePoolLens__factory.connect(addresses.FUSE_POOL_LENS_CONTRACT_ADDRESS, readOnlyProvider)
-    const secondaryFuseLensContract = FusePoolLensSecondary__factory.connect(addresses.FUSE_POOL_LENS_SECONDARY_CONTRACT_ADDRESS, readOnlyProvider)
-
-    let data: FusePoolData
+    let data: FusePoolData | undefined
     try {
         data = await fetchFusePoolData(
             readOnlyProvider, 
@@ -51,12 +45,14 @@ export const Pool = async function(
         throw e
     }
 
+    if (!data) throw Error('No data found for pool')
+
     
     const instance: any = {
         poolId,
         ...data,
         fetch: {
-            markets: getMarketsWithData.bind({contracts: {fuseLensContract}}, data.comptroller),
+            markets: getMarketsWithData.bind(null, provider, addresses.FUSE_POOL_LENS_CONTRACT_ADDRESS, data.comptroller),
             rewardedMarkets: fetchRewardedMarketsWithContext.bind(null, data.comptroller, data.oracle, readOnlyProvider),
             pendingRewards: getPendingFlywheelRewards.bind(null, readOnlyProvider, data.comptroller)
         },

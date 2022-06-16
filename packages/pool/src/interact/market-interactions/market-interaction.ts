@@ -1,17 +1,19 @@
 // Ethers
-import { Contract } from "@ethersproject/contracts";
 import { parseEther, parseUnits } from "@ethersproject/units";
 import { BigNumber } from "@ethersproject/bignumber";
 import { Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
 
+// SDK Utils
+import { getDecimals } from "@fuse-v1/utils.sdk";
+
+// Contract 
+import { CErc20__factory, CEther__factory } from "@fuse-v1/core";
+
 // Internal
     // Utils
 import { testForCTokenErrorAndSend } from './utils/testForCTokenErrorAndSend';
-import { getDecimals } from "../../../utils/getDecimals";
     // Types
 import { marketInteractionType } from '../../types';
-import { CErc20__factory, CEther__factory } from "@fuse-v1/core";
-    // Interfaces
 
 /**
  * @param provider - An initiated ethers provider.
@@ -62,38 +64,38 @@ export async function marketInteraction(
             break;
         case 'borrow':
             await testForCTokenErrorAndSend(
-                cTokenContract.callStatic['borrow(uint256)'],
+                cTokenContract.callStatic.borrow,
                 parsedAmount,
-                cTokenContract['borrow(uint256)'],
+                cTokenContract.borrow,
                 "Cannot borrow this amount right now!"
               );
               break
         case 'repay':
             if (!isEth) {   
                 await testForCTokenErrorAndSend(
-                    cTokenContract.callStatic['repayBorrow(uint256)'],
+                    cTokenContract.callStatic.repayBorrow,
                     parsedAmount,
-                    cTokenContract['repayBorrow(uint256)'],
+                    cTokenContract.repayBorrow,
                     "Cannot repay this amount right now!"
                 );
             } else {
-                await cTokenContract['repayBorrow()']({
-                    value: parsedAmount,
-                });
+                await cTokenContract.repayBorrow(
+                    parsedAmount
+                );
             }
             break
         case 'supply':
             if (!isEth) {
                 await testForCTokenErrorAndSend(
-                    cTokenContract.callStatic['mint(uint256)'],
+                    cTokenContract.callStatic.mint,
                     parsedAmount,
-                    cTokenContract['mint(uint256)'],
+                    cTokenContract.mint,
                     "Cannot deposit this amount right now!"
                 ); 
             } else {
-                return await cTokenContract['mint()']({ 
-                    value: parsedAmount
-                });
+                return await cTokenContract.mint(
+                    parsedAmount
+                );
             }
             break
         default:

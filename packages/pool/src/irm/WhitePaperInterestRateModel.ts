@@ -40,8 +40,8 @@ export default class WhitePaperInterestRateModel {
     );
     
     this.reserveFactorMantissa = await cTokenContract.callStatic.reserveFactorMantissa();
-    this.reserveFactorMantissa = this.reserveFactorMantissa.add( await cTokenContract.callStatic.adminFeeMantissa())
-    this.reserveFactorMantissa = this.reserveFactorMantissa.add(await cTokenContract.callStatic.fuseFeeMantissa());
+    this.reserveFactorMantissa = this.reserveFactorMantissa?.add( await cTokenContract.callStatic.adminFeeMantissa())
+    this.reserveFactorMantissa = this.reserveFactorMantissa?.add(await cTokenContract.callStatic.fuseFeeMantissa());
     this.initialized = true;
   }
 

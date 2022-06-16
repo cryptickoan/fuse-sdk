@@ -6,7 +6,6 @@
         "declarationDir": "dist/types",
         "esModuleInterop": true,
         "inlineSourceMap": false,
-        "rootDir": ".",
         "lib": ["esnext"],
         "listEmittedFiles": false,
         "listFiles": false,

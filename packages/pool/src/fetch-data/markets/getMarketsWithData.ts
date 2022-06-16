@@ -2,15 +2,19 @@
 import { Zero, WeiPerEther } from '@ethersproject/constants';
 import { BigNumber } from "@ethersproject/bignumber";
 
+// SDK Utils
+import { getEthUsdPriceBN } from '@fuse-v1/utils.sdk';
+
 // Internal
     // Types
 import { Options } from '../../types';
 import { MarketsWithData } from '../../types';
     // Utils
 import { filterOnlyObjectProperties } from "../utils/filterOnlyObjectProperties";
-import { getEthUsdPriceBN } from '../../../utils';
 import { convertMantissaToAPY } from '../utils/mantissaToAPY';
 import { formatEther } from 'ethers/lib/utils';
+import { FusePoolLens__factory } from '@fuse-v1/periphery';
+import { Provider } from '@ethersproject/abstract-provider';
 
 /**
  * @param comptrollerAddress - Comptroller to look for.
@@ -18,11 +22,13 @@ import { formatEther } from 'ethers/lib/utils';
  * @returns - Async function call to get all public pools.
  */
 export async function getMarketsWithData(
+    provider: Provider,
+    fusePoolLensPrimaryAddress: string,
     comptrollerAddress: string,
     options?: Options
 ): Promise<MarketsWithData> {
     let assets: any[] = (
-        await this.contracts.fuseLensContract.callStatic.getPoolAssetsWithData(
+        await (FusePoolLens__factory.connect(fusePoolLensPrimaryAddress, provider)).callStatic.getPoolAssetsWithData(
             comptrollerAddress,  options ?? {})
     ).map(filterOnlyObjectProperties)
 

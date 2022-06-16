@@ -1,5 +1,8 @@
+// Ethers
 import { keccak256 } from '@ethersproject/keccak256';
 import { Provider } from '@ethersproject/abstract-provider';
+
+// Types
 import { OracleHashes } from '../../types';
 
 /**

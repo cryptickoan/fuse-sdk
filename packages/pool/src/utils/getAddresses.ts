@@ -35,9 +35,13 @@ const arbitrumRinkeby = {
     FUSE_POOL_LENS_SECONDARY_CONTRACT_ADDRESS: "0xb2a4B68f5126F1624b900f5d637Bd15968d7a119"
 }
 
-const list = {
-    1: mainnet,
-    42161: arbitrum,
-    421611: arbitrumRinkeby,
-    31337: hardhat
+const list: ChainAddressesList = {
+    "1": mainnet,
+    "42161": arbitrum,
+    "421611": arbitrumRinkeby,
+    "31337": hardhat
+}
+
+type ChainAddressesList = {
+    [key: string]: Addresses
 }

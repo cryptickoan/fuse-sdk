@@ -1,12 +1,15 @@
 // Ethers
 import { Provider } from '@ethersproject/abstract-provider'
+import { formatEther } from 'ethers/lib/utils'
+
+// Contracts
 import { Comptroller__factory } from '@fuse-v1/core'
 import { FlywheelStaticRewards__factory, FuseFlywheelCore__factory } from '@fuse-v1/flywheel'
 import { MasterPriceOracle__factory } from '@fuse-v1/oracles'
-import { formatEther } from 'ethers/lib/utils'
 
-// Types
-import { getEthUsdPriceBN } from '../../../utils'
+// SDK Utils
+import { getEthUsdPriceBN } from '@fuse-v1/utils.sdk'
+
 
 /**
  * @param comptrollerAddress - Address of comptroller to query.

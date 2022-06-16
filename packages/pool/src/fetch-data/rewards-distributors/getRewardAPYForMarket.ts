@@ -1,15 +1,18 @@
-// Internal Utils
-import { constructMantissa } from "./utils/constructMantissa"
-import { convertMantissaToAPY, convertMantissaToAPR } from "./utils/convertMantissa"
-
 // Ethers
 import { Provider } from '@ethersproject/abstract-provider'
+import { formatUnits } from "ethers/lib/utils"
 
-// SDK 
+// SDK Utils
+import { getDecimals } from "@fuse-v1/utils.sdk"
+
+// Internal
+import { constructMantissa } from "./utils/constructMantissa"
+import { convertMantissaToAPY, convertMantissaToAPR } from "./utils/convertMantissa"
 import { fetchRewardSpeedInMarket } from "./fetchRewardSpeedsInMarket"
 import { fetchRewardTokenInRd } from "./fetchRewardTokenInRd"
 import { getMarketsWithData, getPriceFromOracle } from "../markets"
-import { formatUnits } from "ethers/lib/utils"
+
+
 
 /**
  * 
@@ -23,16 +26,12 @@ import { formatUnits } from "ethers/lib/utils"
 export async function getRewardAPYForMarket(
     rdAddress: string,
     marketAddress: string,
+    fusePoolLensPrimaryAddress: string,
     oracleAddress: string,
     comptrollerAddress: string,
     type: 'supply' | 'borrow',
     provider: Provider
 ) {
-    // const rdAddress = '0x5302E909d1e93e30F05B5D6Eea766363D14F9892'
-    // const marketAddress = '0xB8DA336A58a13D9F09FaA41570cAAf5Ec4879266'
-    // const oracleAddress = '0xc60d11e23fc0e61A833f2c83ba2d764464704062'
-    // const comptrollerAddress = '0x42053c258b5cd0b7f575e180DE4B90763cC2358b'
-
     const rewardSpeed = await fetchRewardSpeedInMarket(
             rdAddress,
             marketAddress,
@@ -57,6 +56,8 @@ export async function getRewardAPYForMarket(
         )
 
     const underlying = await getMarketsWithData(
+            provider,
+            fusePoolLensPrimaryAddress,
             comptrollerAddress
         )
 

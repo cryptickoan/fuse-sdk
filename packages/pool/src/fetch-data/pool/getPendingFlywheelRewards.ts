@@ -1,15 +1,20 @@
+// Ethers
 import { Provider } from "@ethersproject/abstract-provider"
 import { Zero } from "@ethersproject/constants"
-import { CErc20__factory, Comptroller__factory } from "@fuse-v1/core"
-import { FuseFlywheelCore__factory } from "@fuse-v1/flywheel"
 import { BigNumber } from "ethers"
 
+// Contracts
+import { CErc20__factory, Comptroller__factory } from "@fuse-v1/core"
+import { FuseFlywheelCore__factory } from "@fuse-v1/flywheel"
+
+
+// TODO: fix types
 export const getPendingFlywheelRewards = async (
     provider: Provider,
     comptroller: string,
     userAddress: string
 ) => {
-    let pendingRewards = {}
+    let pendingRewards: FlywheelSupplyRewards = {}
     const comptrollerContract = Comptroller__factory.connect(comptroller, provider)
     const flywheels = await comptrollerContract.callStatic.getRewardsDistributors()
 
@@ -23,7 +28,7 @@ export const getPendingFlywheelRewards = async (
         const incentivizingSupply = await flywheelContract.callStatic.rewardingSupply()
         const rewardedToken = await flywheelContract.callStatic.rewardToken()
 
-        let shouldAccrue: any  = {}
+        let shouldAccrue: AccrueInfo = {}
         for (const market of listedStrategies) {
             // 1. Get the strategy state, this will tell us when the last accrue was made
             const strategyState = await flywheelContract.strategyState(market)
@@ -97,6 +102,7 @@ type AccrueInfo = {
         currentTimeStamp: string,
         timeSinceLastAccrue: number,
         shouldUpdate: boolean,
-        userIsActive: boolean
+        userIsActive: boolean,
+        rewardedToken: string
     }
 }
