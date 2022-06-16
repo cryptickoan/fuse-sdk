@@ -10,9 +10,8 @@ import { testForCTokenErrorAndSend } from './utils/testForCTokenErrorAndSend';
 import { getDecimals } from "../../../utils/getDecimals";
     // Types
 import { marketInteractionType } from '../../types';
+import { CErc20__factory, CEther__factory } from "@fuse-v1/core";
     // Interfaces
-import { CErc20__factory } from "../../../abis/types";
-import { CEther__factory } from "../../../abis/types/factories/CEther__factory";
 
 /**
  * @param provider - An initiated ethers provider.
