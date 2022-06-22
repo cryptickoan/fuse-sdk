@@ -6,6 +6,7 @@ import { BigNumber } from "ethers"
 // Contracts
 import { CErc20__factory, Comptroller__factory } from "@fuse-v1/core"
 import { FuseFlywheelCore__factory } from "@fuse-v1/flywheel"
+import { AccrueInfo, FlywheelSupplyRewards } from "../../types"
 
 
 // TODO: fix types
@@ -87,22 +88,4 @@ export const getPendingFlywheelRewards = async (
 
     // If supply[flywheel].shouldAccrue is not empty, then those markets can be accrued for if user chooses to.
     return {pendingRewards}
-}
-
-type FlywheelSupplyRewards = {
-    [flywheel: string]: {
-        shouldAccrue: AccrueInfo,
-        accruedRewards: BigNumber
-    }
-}
-
-type AccrueInfo = {
-    [market: string] :{
-        lastUpdatedTimeStamp: number,
-        currentTimeStamp: string,
-        timeSinceLastAccrue: number,
-        shouldUpdate: boolean,
-        userIsActive: boolean,
-        rewardedToken: string
-    }
 }

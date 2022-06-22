@@ -1,7 +1,8 @@
 // Ethers
 import { BigNumber } from "@ethersproject/bignumber";
-import { Contract } from "@ethersproject/contracts";
+import { Contract, ContractTransaction } from "@ethersproject/contracts";
 import { Provider } from '@ethersproject/abstract-provider'
+import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 
 export interface TokenData {
     name: string;
@@ -90,6 +91,24 @@ export type OracleHashes = {
     [key: string]: string
   } 
 
+export type FlywheelSupplyRewards = {
+    [flywheel: string]: {
+        shouldAccrue: AccrueInfo,
+        accruedRewards: BigNumber
+    }
+}
+
+export type AccrueInfo = {
+    [market: string] :{
+        lastUpdatedTimeStamp: number,
+        currentTimeStamp: string,
+        timeSinceLastAccrue: number,
+        shouldUpdate: boolean,
+        userIsActive: boolean,
+        rewardedToken: string
+    }
+}
+
 export interface RewardsDistributorData {
     address: string;
     isRewardsDistributor: boolean;
@@ -98,21 +117,29 @@ export interface RewardsDistributorData {
 
 export type PoolInstance = {
     poolId: number
-    poolData: FusePoolData
-    contracts: {
-        fuseLens: Contract,
-        secondaryFuseLens: Contract
-    }
+    comptroller: string,
+    name: string,
+    oracle: string,
+    oracleModel: string | null,
+    admin: string,
     fetch: {
-        getMarketsWithData(comptrollerAddress: string, options?: Options): Promise<MarketsWithData>,
-        fetchAvailableRdsWithContext(comptrollerAddress: string, provider: Provider): Promise<RewardsDistributorData[]>
+        markets(options?: Options): Promise<MarketsWithData>
+        rewardedMarkets(): Promise<any>,
+        pendingRewards(userAddress: string): Promise<{
+            pendingRewards: FlywheelSupplyRewards;
+        }>
     }
-    utils: {
-        fetchTokenBalance(provider: Provider, tokenAddress: string | undefined, address?: string, parse?: boolean): Promise<number | BigNumber>,
-        getDecimals(provider: Provider, tokenAddress: string): Promise<BigNumber>,
-        getEthUsdPriceBN: () => Promise<BigNumber>,
-        getUnderlyingBalancesForPool: (markets: USDPricedFuseAsset[]) => {
-            [cToken: string]: BigNumber;
+    interact: {
+        market: {
+            supply(cTokenAddress: string, amount: string, underlyingAddress: string, decimals?: BigNumber, account?: string): Promise<ContractTransaction | undefined>,
+            withdraw(cTokenAddress: string, amount: string, underlyingAddress: string, decimals?: BigNumber, account?: string): Promise<ContractTransaction | undefined>,
+            borrow(cTokenAddress: string, amount: string, underlyingAddress: string, decimals?: BigNumber, account?: string): Promise<ContractTransaction | undefined>,
+            repay(cTokenAddress: string, amount: string, underlyingAddress: string, decimals?: BigNumber, account?: string): Promise<ContractTransaction | undefined>,
+            enterMarkets(marketAddress: string[] | string): Promise<void>,
+            exitMarkets(marketAddress: string[] | string): Promise<void>
+        },
+        flywheel: {
+            
         }
     }
 
