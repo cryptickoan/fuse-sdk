@@ -1,12 +1,12 @@
 import { JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import { ContractReceipt } from "@ethersproject/contracts";
-import { InitializableClones__factory } from "../abis/types/factories/InitializableClones__factory";
-import { MasterPriceOracle__factory } from "../abis/types/factories/MasterPriceOracle__factory";
-import { UniswapV3TwapPriceOracleV2Factory__factory } from "../abis/types/factories/UniswapV3TwapPriceOracleV2Factory__factory";
-import { UniswapV3TwapPriceOracle__factory } from '../abis/types/factories/UniswapV3TwapPriceOracle__factory';
-import { UniswapTwapPriceOracleV2Factory__factory } from "../abis/types/factories/UniswapTwapPriceOracleV2Factory__factory";
-import { ChainlinkPriceOracle__factory } from "../abis/types/factories/ChainlinkPriceOracle__factory";
-import { ChainlinkPriceOracleV2__factory, FixedTokenPriceOracle__factory, UniswapLpTokenPriceOracle__factory, UniswapTwapPriceOracle__factory } from "../abis/types";
+import { InitializableClones__factory } from "./abis/types/factories/InitializableClones__factory";
+import { MasterPriceOracle__factory } from "./abis/types/factories/MasterPriceOracle__factory";
+import { UniswapV3TwapPriceOracleV2Factory__factory } from "./abis/types/factories/UniswapV3TwapPriceOracleV2Factory__factory";
+import { UniswapV3TwapPriceOracle__factory } from './abis/types/factories/UniswapV3TwapPriceOracle__factory';
+import { UniswapTwapPriceOracleV2Factory__factory } from "./abis/types/factories/UniswapTwapPriceOracleV2Factory__factory";
+import { ChainlinkPriceOracle__factory } from "./abis/types/factories/ChainlinkPriceOracle__factory";
+import { ChainlinkPriceOracleV2__factory, FixedTokenPriceOracle__factory, UniswapLpTokenPriceOracle__factory, UniswapTwapPriceOracle__factory } from "./abis/types";
 
 export const deployPriceOracle = async (
     provider: JsonRpcProvider | Web3Provider,
@@ -16,7 +16,7 @@ export const deployPriceOracle = async (
     factoryAddress: string
 ) => {
     let deployArgs: any = []
-    let deployedPriceOracle: string
+    let deployedPriceOracle: string = ""
     let oracleContractFactory: any
     switch (model) {
         case "MasterPriceOracle":
@@ -40,12 +40,13 @@ export const deployPriceOracle = async (
             let receipt: ContractReceipt
             try {
                 receipt = await (await initializableClones.clone("0xb3c8ee7309be658c186f986388c2377da436d8fb",initializerData)).wait(1)
+                
             } catch (e) {
                 throw Error("Master Price Oracle deployment failed! " + e)
             }
 
             // 4. Get deployed contract address
-            deployedPriceOracle = receipt.events.find(e => e.event === "Deployed").args.instance
+            deployedPriceOracle = receipt.events?.find(e => e.event === "Deployed")?.args?.instance
             break;
         case "UniswapV3TwapPriceOracleV2":
             // 1. Validate fee tier
@@ -122,7 +123,7 @@ export const deployPriceOracle = async (
             deployedPriceOracle = (await (new FixedTokenPriceOracle__factory(provider.getSigner())).deploy(conf.baseToken)).address
             break
         default:
-            throw Error(`Invalid oracle model! ${model} is not recognized, please try again.`)
+            throw new Error(`Invalid oracle model! ${model} is not recognized, please try again.`)
     }
 
     return deployedPriceOracle

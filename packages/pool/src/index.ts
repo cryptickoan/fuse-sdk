@@ -48,7 +48,7 @@ export const Pool = async function(
     if (!data) throw Error('No data found for pool')
 
     
-    const instance: any = {
+    const instance: PoolInstance = {
         poolId,
         ...data,
         fetch: {
@@ -75,4 +75,6 @@ export const Pool = async function(
 
     return instance
 }
+
+export  { PoolInstance }
 

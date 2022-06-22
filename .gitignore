@@ -1,15 +1,11 @@
 # Global
 /node_modules
+.env
 
 ###############
-# SDK Package #
+# Packages #
 ###############
-
-# Typescript build
-/packages/sdk/@fuse
-
-# Typechain
-/packages/sdk/src/abis/types
+/packages/**/dist
 
 ###################
 # Example Package #
@@ -17,4 +13,3 @@
 
 /packages/example/.next
 /packages/example/node_modules
-/packages/**/dist
